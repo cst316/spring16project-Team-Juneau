@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="memoranda" default="package" basedir=".">
+<!--- some exml comment -->
+<project name="Memoranda" default="package" basedir=".">
 	<!-- Build.xml file initially created by Kenneth J. Pouncey              -->
 	<!-- on 5 september 2003.                                                -->
 	<!-- Kenneth is the project-leader of the tn5250j-project on SourceForge -->
