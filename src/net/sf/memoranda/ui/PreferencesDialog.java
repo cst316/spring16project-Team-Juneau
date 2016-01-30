@@ -44,6 +44,10 @@ public class PreferencesDialog extends JDialog {
 	JLabel jLabel3 = new JLabel();
 
 	ButtonGroup lfGroup = new ButtonGroup();
+	
+	JRadioButton lfDarkRB = new JRadioButton();
+	
+	JRadioButton lfLightRB = new JRadioButton();
 
 	JRadioButton lfSystemRB = new JRadioButton();
 
@@ -285,26 +289,50 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 10, 0, 15);
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(jLabel3, gbc);
-
+		
+		lfGroup.add(lfDarkRB);
+		lfDarkRB.setText(Local.getString("Dark"));
+		lfDarkRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lfDarkRB_actionPerformed(e);
+			}
+		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-
+		GeneralPanel.add(lfDarkRB, gbc);
+		
+		
+		lfGroup.add(lfLightRB);
+		lfLightRB.setText(Local.getString("Light"));
+		lfLightRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lfLightRB_actionPerformed(e);
+			}
+		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 5;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);
+		GeneralPanel.add(lfLightRB, gbc);
 
+		lfGroup.add(lfSystemRB);
+		lfSystemRB.setText(Local.getString("System"));
+		lfSystemRB.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lfSystemRB_actionPerformed(e);
+			}
+		});
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 6;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfJavaRB, gbc);
+		GeneralPanel.add(lfSystemRB, gbc);
+		
 		lfGroup.add(lfCustomRB);
 		lfCustomRB.setText(Local.getString("Custom"));
 		lfCustomRB.addActionListener(new java.awt.event.ActionListener() {
@@ -327,6 +355,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(classNameLabel, gbc);
 		lfClassName.setEnabled(false);
+		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 9;
@@ -763,6 +792,14 @@ public class PreferencesDialog extends JDialog {
 
 	void closeHideRB_actionPerformed(ActionEvent e) {
 		// this.askConfirmChB.setEnabled(false);
+	}
+	
+	void lfDarkRB_actionPerformed(ActionEvent e){
+		this.enableCustomLF(false);
+	}
+	
+	void lfLightRB_actionPerformed(ActionEvent e){
+		this.enableCustomLF(false);
 	}
 
 	void lfSystemRB_actionPerformed(ActionEvent e) {
