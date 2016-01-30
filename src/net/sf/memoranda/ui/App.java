@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
-import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
