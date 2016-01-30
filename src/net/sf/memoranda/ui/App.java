@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 import net.sf.memoranda.EventsScheduler;
 import net.sf.memoranda.util.Configuration;
 
@@ -64,12 +65,27 @@ public class App {
 		System.out.println(VERSION_INFO);
 		System.out.println(Configuration.get("LOOK_AND_FEEL"));
 		try {
-			if (Configuration.get("LOOK_AND_FEEL").equals("system"))
+			if (Configuration.get("LOOK_AND_FEEL").equals("default"))
 				UIManager.setLookAndFeel(
 					UIManager.getSystemLookAndFeelClassName());
-			else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
-				UIManager.setLookAndFeel(
-					UIManager.getCrossPlatformLookAndFeelClassName());					
+			else if (Configuration.get("LOOK_AND_FEEL").equals("light"))
+				try 
+		    	{
+				UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+			    } 
+			    catch (Exception e) 
+			    {
+			      e.printStackTrace();
+			    }
+			else if (Configuration.get("LOOK_AND_FEEL").equals("dark"))
+				try 
+			    {
+				      UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+				    } 
+				    catch (Exception e) 
+				    {
+				      e.printStackTrace();
+				    }
 			else if (
 				Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
 				UIManager.setLookAndFeel(

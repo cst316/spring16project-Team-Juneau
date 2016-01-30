@@ -12,6 +12,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
 
 /*$Id: PreferencesDialog.java,v 1.16 2006/06/28 22:58:31 alexeya Exp $*/
 public class PreferencesDialog extends JDialog {
@@ -50,8 +51,6 @@ public class PreferencesDialog extends JDialog {
 	JRadioButton lfLightRB = new JRadioButton();
 
 	JRadioButton lfSystemRB = new JRadioButton();
-
-	JRadioButton lfJavaRB = new JRadioButton();
 
 	JRadioButton lfCustomRB = new JRadioButton();
 
@@ -290,11 +289,11 @@ public class PreferencesDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.EAST;
 		GeneralPanel.add(jLabel3, gbc);
 		
-		lfGroup.add(lfDarkRB);
-		lfDarkRB.setText(Local.getString("Dark"));
-		lfDarkRB.addActionListener(new java.awt.event.ActionListener() {
+		lfGroup.add(lfSystemRB);
+		lfSystemRB.setText(Local.getString("Default"));
+		lfSystemRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lfDarkRB_actionPerformed(e);
+				lfSystemRB_actionPerformed(e);
 			}
 		});
 		gbc = new GridBagConstraints();
@@ -302,8 +301,7 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 4;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfDarkRB, gbc);
-		
+		GeneralPanel.add(lfSystemRB, gbc);
 		
 		lfGroup.add(lfLightRB);
 		lfLightRB.setText(Local.getString("Light"));
@@ -318,12 +316,12 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(lfLightRB, gbc);
-
-		lfGroup.add(lfSystemRB);
-		lfSystemRB.setText(Local.getString("System"));
-		lfSystemRB.addActionListener(new java.awt.event.ActionListener() {
+		
+		lfGroup.add(lfDarkRB);
+		lfDarkRB.setText(Local.getString("Dark"));
+		lfDarkRB.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lfSystemRB_actionPerformed(e);
+				lfDarkRB_actionPerformed(e);
 			}
 		});
 		gbc = new GridBagConstraints();
@@ -331,7 +329,9 @@ public class PreferencesDialog extends JDialog {
 		gbc.gridy = 6;
 		gbc.insets = new Insets(2, 0, 0, 10);
 		gbc.anchor = GridBagConstraints.WEST;
-		GeneralPanel.add(lfSystemRB, gbc);
+		GeneralPanel.add(lfDarkRB, gbc);
+
+		
 		
 		lfGroup.add(lfCustomRB);
 		lfCustomRB.setText(Local.getString("Custom"));
@@ -564,16 +564,18 @@ public class PreferencesDialog extends JDialog {
 
 		enableCustomLF(false);
 		String lf = Configuration.get("LOOK_AND_FEEL").toString();
-		if (lf.equalsIgnoreCase("system"))
+		if (lf.equalsIgnoreCase("default"))
 			lfSystemRB.setSelected(true);
-		else if (lf.equalsIgnoreCase("default"))
-			lfJavaRB.setSelected(true);
+		else if (lf.equalsIgnoreCase("dark"))
+			lfDarkRB.setSelected(true);
+		else if (lf.equalsIgnoreCase("light"))
+			lfLightRB.setSelected(true);
 		else if (lf.length() > 0) {
 			lfCustomRB.setSelected(true);
 			enableCustomLF(true);
 			lfClassName.setText(lf);
 		} else
-			lfJavaRB.setSelected(true);
+			lfSystemRB.setSelected(true);
 
 		askConfirmChB.setSelected(!Configuration.get("ASK_ON_EXIT").toString()
 				.equalsIgnoreCase("no"));
@@ -680,21 +682,38 @@ public class PreferencesDialog extends JDialog {
 		String newlf = "";
 
 		if (this.lfSystemRB.isSelected())
-			newlf = "system";
-		else if (this.lfJavaRB.isSelected())
 			newlf = "default";
+		else if (this.lfLightRB.isSelected())
+			newlf = "light";
+		else if (this.lfDarkRB.isSelected())
+			newlf = "dark";
 		else if (this.lfCustomRB.isSelected())
 			newlf = this.lfClassName.getText();
 
 		if (!lf.equalsIgnoreCase(newlf)) {
 			Configuration.put("LOOK_AND_FEEL", newlf);
 			try {
-				if (Configuration.get("LOOK_AND_FEEL").equals("system"))
+				if (Configuration.get("LOOK_AND_FEEL").equals("default"))
 					UIManager.setLookAndFeel(UIManager
 							.getSystemLookAndFeelClassName());
-				else if (Configuration.get("LOOK_AND_FEEL").equals("default"))
-					UIManager.setLookAndFeel(UIManager
-							.getCrossPlatformLookAndFeelClassName());
+				else if (Configuration.get("LOOK_AND_FEEL").equals("dark"))
+						try 
+					    {
+							UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
+						    } 
+						    catch (Exception e) 
+						    {
+						      e.printStackTrace();
+						    }
+				else if (Configuration.get("LOOK_AND_FEEL").equals("light"))
+					try 
+			    {
+					UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+				    } 
+				    catch (Exception e) 
+				    {
+				      e.printStackTrace();
+				    }
 				else if (Configuration.get("LOOK_AND_FEEL").toString().length() > 0)
 					UIManager.setLookAndFeel(Configuration.get("LOOK_AND_FEEL")
 							.toString());
