@@ -62,6 +62,7 @@ public class TaskDialog extends JDialog {
     
     // added by rawsushi
     JTextField effortField = new JTextField();
+    JTextField codeLinesField = new JTextField();
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -89,11 +90,14 @@ public class TaskDialog extends JDialog {
     JPanel jPanelEffort = new JPanel(new FlowLayout(FlowLayout.LEFT));
 //    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
     
+    JPanel jPanelCodeLines = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    
     JButton setNotifB = new JButton();
     JComboBox priorityCB = new JComboBox(priority);
     JLabel jLabel7 = new JLabel();
     // added by rawsushi
     JLabel jLabelEffort = new JLabel();
+    JLabel jLabelCodeLines = new JLabel();
     JLabel jLabelDescription = new JLabel();
 	JCheckBox chkEndDate = new JCheckBox();
 	
@@ -349,6 +353,10 @@ public class TaskDialog extends JDialog {
         jPanel2.add(jPanelEffort, null);
         jPanelEffort.add(jLabelEffort, null);
         jPanelEffort.add(effortField, null);
+        
+        jPanel2.add(jPanelCodeLines, null);
+        jPanelCodeLines.add(jLabelCodeLines, null);
+        jPanelCodeLines.add(codeLinesField, null);
 
         jPanel2.add(jPanel4, null);
         jPanel4.add(priorityCB, null);
