@@ -86,15 +86,15 @@ public class TaskImpl implements Task, Comparable {
     public void setEffort(long effort) {
         setAttr("effort", String.valueOf(effort));
     }
-	
-    public long getCodeLines() {
+    
+    public int getCodeLines() {
     	Attribute attr = _element.getAttribute("codeLines");
     	if (attr == null) {
     		return 0;
     	}
     	else {
     		try {
-    			return Long.parseLong(attr.getValue());
+    			return Integer.parseInt(attr.getValue());
     		}
     		catch (NumberFormatException e) {
     			return 0;
