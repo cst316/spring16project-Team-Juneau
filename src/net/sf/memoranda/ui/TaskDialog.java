@@ -75,7 +75,7 @@ public class TaskDialog extends JDialog {
         Local.getString("Highest")};
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
-    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel jPanel6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel jLabel6 = new JLabel();
     JButton setStartDateB = new JButton();
@@ -101,7 +101,7 @@ public class TaskDialog extends JDialog {
     JLabel jLabelDescription = new JLabel();
 	JCheckBox chkEndDate = new JCheckBox();
 	
-	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JLabel jLabelProgress = new JLabel();
 	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
 	
