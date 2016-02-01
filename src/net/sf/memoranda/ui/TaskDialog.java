@@ -57,11 +57,12 @@ public class TaskDialog extends JDialog {
     Border border4;
 //    Border border5;
 //    Border border6;
-    JPanel jPanel2 = new JPanel(new GridLayout(3, 2));
+    JPanel jPanel2 = new JPanel(new GridLayout(4, 3));
     JTextField todoField = new JTextField();
     
     // added by rawsushi
     JTextField effortField = new JTextField();
+    JTextField codeLinesField = new JTextField();
     JTextArea descriptionField = new JTextArea();
     JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
     
@@ -74,7 +75,7 @@ public class TaskDialog extends JDialog {
         Local.getString("Highest")};
     boolean ignoreStartChanged = false;
     boolean ignoreEndChanged = false;
-    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    JPanel jPanel4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel jPanel6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel jLabel6 = new JLabel();
     JButton setStartDateB = new JButton();
@@ -87,17 +88,20 @@ public class TaskDialog extends JDialog {
     //JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel jPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JPanel jPanelEffort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel jPanelCodeLines = new JPanel(new FlowLayout(FlowLayout.LEFT));
     
+//    JPanel jPanelNotes = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
     JButton setNotifB = new JButton();
     JComboBox priorityCB = new JComboBox(priority);
     JLabel jLabel7 = new JLabel();
     // added by rawsushi
     JLabel jLabelEffort = new JLabel();
+    JLabel jLabelCodeLines = new JLabel();
     JLabel jLabelDescription = new JLabel();
 	JCheckBox chkEndDate = new JCheckBox();
 	
-	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	JPanel jPanelProgress = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	JLabel jLabelProgress = new JLabel();
 	JSpinner progress = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
 	
@@ -206,12 +210,21 @@ public class TaskDialog extends JDialog {
         descriptionScrollPane.setPreferredSize(new Dimension(375,96));
         gbLayout.setConstraints(descriptionScrollPane,gbCon);
 
+        
         jLabelEffort.setMaximumSize(new Dimension(100, 16));
         jLabelEffort.setMinimumSize(new Dimension(60, 16));
         jLabelEffort.setText(Local.getString("Est Effort(hrs)"));
         effortField.setBorder(border8);
         effortField.setPreferredSize(new Dimension(30, 24));
-
+        
+        
+        jLabelCodeLines.setMaximumSize(new Dimension(100, 16));
+        jLabelCodeLines.setMinimumSize(new Dimension(60, 16));
+        jLabelCodeLines.setText(Local.getString("Code Lines(LOC)"));
+        codeLinesField.setBorder(border8);
+        codeLinesField.setPreferredSize(new Dimension(30, 24));
+        
+        
         startDate.setBorder(border8);
         startDate.setPreferredSize(new Dimension(80, 24));                
 		SimpleDateFormat sdf = new SimpleDateFormat();
@@ -346,9 +359,14 @@ public class TaskDialog extends JDialog {
         jPanel1.add(endDate, null);
         jPanel1.add(setEndDateB, null);
         // added by rawsushi
+        
         jPanel2.add(jPanelEffort, null);
         jPanelEffort.add(jLabelEffort, null);
         jPanelEffort.add(effortField, null);
+        
+        jPanel2.add(jPanelCodeLines, null);
+        jPanelCodeLines.add(jLabelCodeLines, null);
+        jPanelCodeLines.add(codeLinesField, null);
 
         jPanel2.add(jPanel4, null);
         jPanel4.add(priorityCB, null);
