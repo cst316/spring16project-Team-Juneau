@@ -30,6 +30,8 @@ public interface Event {
     
     String getText();
     
+    String getDisc(); //added this line ---------------- EditJR
+    
     nu.xom.Element getContent();
     
     int getRepeat();

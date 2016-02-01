@@ -59,6 +59,14 @@ public class EventImpl implements Event, Comparable {
     }
 
     /**
+     * added this method ----------------------------------------------- EditJR
+     * @see net.sf.memoranda.Event#getDisc()
+     */
+    public String getDisc() {
+        return _elem.getAttributeValue("discription");
+    }
+    
+    /**
      * @see net.sf.memoranda.Event#getContent()
      */
     public Element getContent() {
