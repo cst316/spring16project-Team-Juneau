@@ -60,22 +60,26 @@ public class ExportSticker {
                 String fs = System.getProperty("file.separator");
                 
                 String contents = getSticker();
-                try {
-                File file = new File(this.name+"."+src);
-                
-                
-                        FileWriter fwrite=new FileWriter(file,true);
-            
-                        fwrite.write(contents);
-                        
-                        fwrite.close();
-                        JOptionPane.showMessageDialog(null,Local.getString("Document successfully created in Mormoranda folder"));
-            
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null,Local.getString("Your document could not be created =(..."));
-        }
+                if((this.name != null) && (!this.name.equalsIgnoreCase(""))){//check for empty file name
+	                try {
+	                File file = new File(this.name+"."+src);
+	                
+	                
+	                        FileWriter fwrite=new FileWriter(file,true);
+	            
+	                        fwrite.write(contents);
+	                        
+	                        fwrite.close();
+	                        JOptionPane.showMessageDialog(null,Local.getString("Document successfully created in Mormoranda folder"));
+	            
+	            
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			            JOptionPane.showMessageDialog(null,Local.getString("Your document could not be created =(..."));
+			        }
+                }else{
+                	JOptionPane.showMessageDialog(null,Local.getString("No document was created."));
+                }
                 
                 
                         
