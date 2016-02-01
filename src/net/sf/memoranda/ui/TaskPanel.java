@@ -52,6 +52,7 @@ public class TaskPanel extends JPanel {
     JButton editTaskB = new JButton();
     JButton removeTaskB = new JButton();
     JButton completeTaskB = new JButton();
+    JButton resetTaskB = new JButton();
     
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 		
@@ -62,6 +63,7 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppRemoveTask = new JMenuItem();
 	JMenuItem ppNewTask = new JMenuItem();
 	JMenuItem ppCompleteTask = new JMenuItem();
+	JMenuItem ppResetTask = new JMenuItem();
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
 	JMenuItem ppAddSubTask = new JMenuItem();
@@ -178,6 +180,21 @@ public class TaskPanel extends JPanel {
         completeTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
 
+        resetTaskB.setBorderPainted(false);
+        resetTaskB.setFocusable(false);
+        resetTaskB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppResetTask_actionPerformed(e);
+            }
+        });
+        resetTaskB.setPreferredSize(new Dimension(24, 24));
+        resetTaskB.setRequestFocusEnabled(false);
+        resetTaskB.setToolTipText(Local.getString("Reset task"));
+        resetTaskB.setMinimumSize(new Dimension(24, 24));
+        resetTaskB.setMaximumSize(new Dimension(24, 24));
+        resetTaskB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_reset.png")));
+        
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
 //		showActiveOnly.setFocusable(false);
@@ -300,6 +317,16 @@ public class TaskPanel extends JPanel {
 		});
 	ppCompleteTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_complete.png")));
 	ppCompleteTask.setEnabled(false);
+	
+	ppResetTask.setFont(new java.awt.Font("Dialog", 1, 11));
+	ppResetTask.setText(Local.getString("Reset task"));
+	ppResetTask.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppResetTask_actionPerformed(e);
+			}
+		});
+	ppResetTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_reset.png")));
+	ppResetTask.setEnabled(false);
 
 	ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
 	ppCalcTask.setText(Local.getString("Calculate task data"));
@@ -323,6 +350,7 @@ public class TaskPanel extends JPanel {
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
         tasksToolBar.add(completeTaskB, null);
+        tasksToolBar.add(resetTaskB, null);
 
 		//tasksToolBar.add(showActiveOnly, null);
         
@@ -357,6 +385,8 @@ public class TaskPanel extends JPanel {
 				
 				ppCompleteTask.setEnabled(enbl);
 				completeTaskB.setEnabled(enbl);
+				ppResetTask.setEnabled(enbl);
+				resetTaskB.setEnabled(enbl);
 				ppAddSubTask.setEnabled(enbl);
 				//ppSubTasks.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				ppCalcTask.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
@@ -387,6 +417,7 @@ public class TaskPanel extends JPanel {
         editTaskB.setEnabled(false);
         removeTaskB.setEnabled(false);
 		completeTaskB.setEnabled(false);
+		resetTaskB.setEnabled(false);
 		ppAddSubTask.setEnabled(false);
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
@@ -399,6 +430,7 @@ public class TaskPanel extends JPanel {
     
     taskPPMenu.addSeparator();
 	taskPPMenu.add(ppCompleteTask);
+	taskPPMenu.add(ppResetTask);
 	taskPPMenu.add(ppCalcTask);
 	
     //taskPPMenu.addSeparator();
@@ -702,6 +734,24 @@ public class TaskPanel extends JPanel {
 		CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
 		parentPanel.updateIndicators();
 		//taskTable.updateUI();
+	}
+	
+	void ppResetTask_actionPerformed(ActionEvent e) {
+		Vector<Task> toreset = new Vector<Task>();
+		for (int i = 0; i < taskTable.getSelectedRows().length; i++) {
+			Task t =
+			CurrentProject.getTaskList().getTask(
+				taskTable.getModel().getValueAt(taskTable.getSelectedRows()[i], TaskTable.TASK_ID).toString());
+			if (t != null)
+				toreset.add(t);
+		}
+		for (int i = 0; i < toreset.size(); i++) {
+			Task t = (Task)toreset.get(i);
+			t.setProgress(0);
+		}
+		taskTable.tableChanged();
+		CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
+		parentPanel.updateIndicators();
 	}
 
 	// toggle "show active only"
