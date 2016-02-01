@@ -53,7 +53,9 @@ public class EventDialog extends JDialog implements WindowListener {
     JLabel lblTime = new JLabel();
     public JSpinner timeSpin = new JSpinner(new SpinnerDateModel(new Date(), null, null, Calendar.MINUTE));
     JLabel lblText = new JLabel();
+    JLabel lblDesc = new JLabel(); //----------------------------------- EditJR
     public JTextField textField = new JTextField();
+    public JTextField discField = new JTextField(); //----------------------------------- EditJR
     TitledBorder repeatBorder;
     JPanel repeatPanel = new JPanel(new GridBagLayout());
     public JRadioButton noRepeatRB = new JRadioButton();
@@ -118,7 +120,7 @@ public class EventDialog extends JDialog implements WindowListener {
         gbc.gridx = 1; gbc.gridy = 0;
         gbc.insets = new Insets(10, 0, 5, 0);
         gbc.anchor = GridBagConstraints.WEST;
-        eventPanel.add(timeSpin, gbc);
+        eventPanel.add(timeSpin, gbc);        
         lblText.setText(Local.getString("Text"));
         lblText.setMinimumSize(new Dimension(120, 24));
         gbc = new GridBagConstraints();
@@ -136,6 +138,26 @@ public class EventDialog extends JDialog implements WindowListener {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         eventPanel.add(textField, gbc);
+        //----------------------------------------------------------------- EditJR start
+        lblDesc.setText(Local.getString("Description"));
+        lblDesc.setMinimumSize(new Dimension(120, 24));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 3;
+        gbc.gridwidth = 3;
+        gbc.insets = new Insets(5, 10, 5, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        eventPanel.add(lblDesc, gbc);
+
+        discField.setMinimumSize(new Dimension(375, 48));
+        discField.setPreferredSize(new Dimension(375, 48));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 6;
+        gbc.insets = new Insets(5, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        eventPanel.add(discField, gbc);
+        //----------------------------------------------------------------- EditJR end
         
         // Build RepeatPanel
         repeatBorder = new TitledBorder(BorderFactory.createLineBorder(

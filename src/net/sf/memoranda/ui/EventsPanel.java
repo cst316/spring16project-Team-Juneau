@@ -237,6 +237,7 @@ public class EventsPanel extends JPanel {
         ((SpinnerDateModel)dlg.timeSpin.getModel()).setStart(CalendarDate.today().getDate());
         ((SpinnerDateModel)dlg.timeSpin.getModel()).setEnd(CalendarDate.tomorrow().getDate());*/    
         dlg.textField.setText(ev.getText());
+        dlg.discField.setText(ev.getDisc());
         int rep = ev.getRepeat();
         if (rep > 0) {
             dlg.startDate.getModel().setValue(ev.getStartDate().getDate());
@@ -296,10 +297,11 @@ public class EventsPanel extends JPanel {
         //int hh = ((Date) dlg.timeSpin.getModel().getValue()).getHours();
         //int mm = ((Date) dlg.timeSpin.getModel().getValue()).getMinutes();
         String text = dlg.textField.getText();
+        String disc = dlg.discField.getText(); //this line added ------------ EditJR
         if (dlg.noRepeatRB.isSelected())
-   	    EventsManager.createEvent(CurrentDate.get(), hh, mm, text);
+   	    EventsManager.createEvent(CurrentDate.get(), hh, mm, text, disc); //added , disc ---------------- EditJR
         else {
-	    updateEvents(dlg,hh,mm,text);
+	    updateEvents(dlg,hh,mm,text,disc); //added ,disc ---------------- EditJR
 	}    
 	saveEvents();
     }
@@ -309,17 +311,24 @@ public class EventsPanel extends JPanel {
         // round down to hour
         cdate.set(Calendar.MINUTE,0);  
         Util.debug("Default time is " + cdate);
-        
-    	newEventB_actionPerformed(e, null, cdate.getTime(), cdate.getTime());
+        System.out.println("\n\n\nXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"); // full line was added ------- EditJR
+    	newEventB_actionPerformed(e, null, null, cdate.getTime(), cdate.getTime()); //added another null, to the call -------------- EditJR
     }
-    
-    void newEventB_actionPerformed(ActionEvent e, String tasktext, Date startDate, Date endDate) {
+    // Changed arguments from (ActionEvent e, String tasktext,  Date startDate, Date endDate)
+    // to (ActionEvent e, String tasktext, String disctext, Date startDate, Date endDate) ------------------------- EditJR
+    void newEventB_actionPerformed(ActionEvent e, String tasktext, String disctext, Date startDate, Date endDate) {
     	EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("New event"));
     	Dimension frmSize = App.getFrame().getSize();
     	Point loc = App.getFrame().getLocation();
     	if (tasktext != null) {
     		dlg.textField.setText(tasktext);
     	}
+    	// if statement added --------------------- EditJR
+    	if (disctext != null) {
+    		dlg.discField.setText(disctext);
+    	}
+    	
+    	
 		dlg.startDate.getModel().setValue(startDate);
 		dlg.endDate.getModel().setValue(endDate);
 		dlg.timeSpin.getModel().setValue(startDate);
@@ -341,13 +350,14 @@ public class EventsPanel extends JPanel {
     	//int hh = ((Date) dlg.timeSpin.getModel().getValue()).getHours();
     	//int mm = ((Date) dlg.timeSpin.getModel().getValue()).getMinutes();
     	String text = dlg.textField.getText();
+    	String disc = dlg.discField.getText();
 		
 		CalendarDate eventCalendarDate = new CalendarDate(dlg.getEventDate());
 		
     	if (dlg.noRepeatRB.isSelected())
-    		EventsManager.createEvent(eventCalendarDate, hh, mm, text);
+    		EventsManager.createEvent(eventCalendarDate, hh, mm, text, disc);
     	else {
-    		updateEvents(dlg,hh,mm,text);
+    		updateEvents(dlg,hh,mm,text,disc);
     	}
     	saveEvents();
     }
@@ -360,7 +370,7 @@ public class EventsPanel extends JPanel {
         parentPanel.updateIndicators();
     }
 
-    private void updateEvents(EventDialog dlg, int hh, int mm, String text) {
+    private void updateEvents(EventDialog dlg, int hh, int mm, String text, String disc) { //added String disc --------------- EditJR
 	int rtype;
         int period;
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
@@ -388,7 +398,7 @@ public class EventsPanel extends JPanel {
             rtype = EventsManager.REPEAT_MONTHLY;
             period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
         }
-        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, dlg.workingDaysOnlyCB.isSelected());
+        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, disc, dlg.workingDaysOnlyCB.isSelected()); //added disc, ---------- EditJR
     }
 
     void removeEventB_actionPerformed(ActionEvent e) {

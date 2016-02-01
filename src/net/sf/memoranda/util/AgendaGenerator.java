@@ -387,12 +387,26 @@ public class AgendaGenerator {
 		Element el = pQ.extraer();
 		String id = el.getAttributeValue("id");
 		String txt = el.getValue();
-            s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><table width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td><a href=\"memoranda:editsticker#"+id+"\">"+Local.getString("EDIT")+"</a></td><td width=\"70%\"><a href=\"memoranda:expandsticker#"+id+"\">"+Local.getString("OPEN IN A NEW WINDOW")+"</></td><td align=\"right\">" +
-                    "&nbsp;" + // without this removesticker link takes klicks from whole cell
-                      "<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
-                    + iurl2
-                    + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"Remove sticker\"></a></td></table></tr><tr><td>"+txt+"</td></tr></table>";
-        }
+		
+		String pri = el.getAttributeValue("priority");
+		//Give Priorities an abbreviated string value
+		if(pri.equals("0"))
+			pri = "Pri: VH";
+		if(pri.equals("1"))
+			pri = "Pri: H";
+		if(pri.equals("2"))
+			pri = "Pri: N";
+		if(pri.equals("3"))
+			pri = "Pri: L";
+		if(pri.equals("4"))
+			pri = "Pri: VL";
+		
+        s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><table width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td><a href=\"memoranda:editsticker#"+id+"\">"+Local.getString("EDIT")+"</a></td><td width=\"70%\"><a href=\"memoranda:expandsticker#"+id+"\">"+Local.getString("OPEN IN A NEW WINDOW")+"</></td><td>"+ pri +"</></td><td align=\"right\">" +
+                "&nbsp;" + // without this removesticker link takes klicks from whole cell
+                  "<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
+                + iurl2
+                + "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"Remove sticker\"></a></td></table></tr><tr><td>"+txt+"</td></tr></table>";
+    }
         s += "<hr>";
 		return s;
 	}

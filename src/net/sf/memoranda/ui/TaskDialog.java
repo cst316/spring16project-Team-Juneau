@@ -452,10 +452,10 @@ public class TaskDialog extends JDialog {
         this.getLayeredPane().add(endCalFrame);
         endCalFrame.show();
     }
-    
+
     void setNotifB_actionPerformed(ActionEvent e) {
     	((AppFrame)App.getFrame()).workPanel.dailyItemsPanel.eventsPanel.newEventB_actionPerformed(e, 
-			this.todoField.getText(), (Date)startDate.getModel().getValue(),(Date)endDate.getModel().getValue());
+			this.todoField.getText(), "", (Date)startDate.getModel().getValue(),(Date)endDate.getModel().getValue());
     }
 
 }
