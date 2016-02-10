@@ -238,6 +238,12 @@ public class EventsPanel extends JPanel {
         ((SpinnerDateModel)dlg.timeSpin.getModel()).setEnd(CalendarDate.tomorrow().getDate());*/    
         dlg.textField.setText(ev.getText());
         dlg.discField.setText(ev.getDisc());
+        
+        if(ev.getEmailNotify()) {
+			dlg.emailNotifyCB.setSelected(true);
+		}
+       
+        
         int rep = ev.getRepeat();
         if (rep > 0) {
             dlg.startDate.getModel().setValue(ev.getStartDate().getDate());
@@ -275,6 +281,8 @@ public class EventsPanel extends JPanel {
 			dlg.workingDaysOnlyCB.setSelected(true);
 		}
 		
+		
+		
         }
 
         Dimension frmSize = App.getFrame().getSize();
@@ -299,7 +307,7 @@ public class EventsPanel extends JPanel {
         String text = dlg.textField.getText();
         String disc = dlg.discField.getText(); //this line added ------------ EditJR
         if (dlg.noRepeatRB.isSelected())
-   	    EventsManager.createEvent(CurrentDate.get(), hh, mm, text, disc); //added , disc ---------------- EditJR
+   	    EventsManager.createEvent(CurrentDate.get(), hh, mm, text, disc,dlg.emailNotifyCB.isSelected()); //added , disc ---------------- EditJR
         else {
 	    updateEvents(dlg,hh,mm,text,disc); //added ,disc ---------------- EditJR
 	}    
@@ -355,7 +363,7 @@ public class EventsPanel extends JPanel {
 		CalendarDate eventCalendarDate = new CalendarDate(dlg.getEventDate());
 		
     	if (dlg.noRepeatRB.isSelected())
-    		EventsManager.createEvent(eventCalendarDate, hh, mm, text, disc);
+    		EventsManager.createEvent(eventCalendarDate, hh, mm, text, disc,dlg.emailNotifyCB.isSelected());
     	else {
     		updateEvents(dlg,hh,mm,text,disc);
     	}
@@ -375,6 +383,8 @@ public class EventsPanel extends JPanel {
         int period;
         CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
         CalendarDate ed = null;
+        
+
         if (dlg.enableEndDateCB.isSelected())
             ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
         if (dlg.dailyRepeatRB.isSelected()) {
@@ -398,7 +408,7 @@ public class EventsPanel extends JPanel {
             rtype = EventsManager.REPEAT_MONTHLY;
             period = ((Integer) dlg.dayOfMonthSpin.getModel().getValue()).intValue();
         }
-        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, disc, dlg.workingDaysOnlyCB.isSelected()); //added disc, ---------- EditJR
+        EventsManager.createRepeatableEvent(rtype, sd, ed, period, hh, mm, text, disc, dlg.workingDaysOnlyCB.isSelected(),dlg.emailNotifyCB.isSelected()); //added disc, ---------- EditJR
     }
 
     void removeEventB_actionPerformed(ActionEvent e) {

@@ -37,6 +37,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sf.memoranda.date.CalendarDate;
+import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
 
 /*$Id: EventDialog.java,v 1.28 2005/02/19 10:06:25 rawsushi Exp $*/
@@ -69,6 +70,7 @@ public class EventDialog extends JDialog implements WindowListener {
     public JComboBox weekdaysCB = new JComboBox(Local.getWeekdayNames());
     public JCheckBox enableEndDateCB = new JCheckBox();
 	public JCheckBox workingDaysOnlyCB = new JCheckBox();
+	public JCheckBox emailNotifyCB = new JCheckBox();
     public JSpinner endDate = new JSpinner(new SpinnerDateModel());
     JButton setEndDateB = new JButton();
     public JRadioButton monthlyRepeatRB = new JRadioButton();
@@ -178,6 +180,21 @@ public class EventDialog extends JDialog implements WindowListener {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         repeatPanel.add(noRepeatRB, gbc);
+        
+        emailNotifyCB.setText(Local.getString("Email Notification"));
+		emailNotifyCB.setHorizontalAlignment(SwingConstants.RIGHT);
+		gbc = new GridBagConstraints();
+        gbc.gridx = 4; gbc.gridy = 0;
+		gbc.gridwidth = 2;
+        gbc.insets = new Insets(5, 0, 5, 5);
+        gbc.anchor = GridBagConstraints.EAST;
+		repeatPanel.add(emailNotifyCB, gbc);
+		
+		if(Configuration.get("USER_EMAIL").toString().equals("default")||
+				Configuration.get("USER_EMAIL").toString().equals(""))
+			emailNotifyCB.setEnabled(false);
+		
+        
         dailyRepeatRB.setActionCommand("daily");
         dailyRepeatRB.setText(Local.getString("Every"));
         dailyRepeatRB.addActionListener(new java.awt.event.ActionListener() {
@@ -525,6 +542,7 @@ public class EventDialog extends JDialog implements WindowListener {
         endDate.setEnabled(enableEndDateCB.isSelected());
         setEndDateB.setEnabled(enableEndDateCB.isSelected());        
     }
+    
     
     public void windowOpened( WindowEvent e ) {}
 

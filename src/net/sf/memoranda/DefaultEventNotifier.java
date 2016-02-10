@@ -7,7 +7,11 @@
  */
 package net.sf.memoranda;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import net.sf.memoranda.ui.EventNotificationDialog;
+import net.sf.memoranda.util.Configuration;
 
 /**
  *  
@@ -30,6 +34,17 @@ public class DefaultEventNotifier implements EventNotificationListener {
 			"Memoranda event",
 			ev.getTimeString(),
 			ev.getText());
+		
+		if(ev.getEmailNotify()){
+		new EventEmail(Configuration.get("USER_EMAIL").toString(),ev.getText());
+		try {
+			EventEmail.sendNewEmail();
+		} catch (AddressException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		}
 	}
 	/**
 	 * @see net.sf.memoranda.EventNotificationListener#eventsChanged()
