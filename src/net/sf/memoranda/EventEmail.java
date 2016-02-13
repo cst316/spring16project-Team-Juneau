@@ -44,10 +44,9 @@ public class EventEmail {
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 		}catch (SendFailedException e) {
-			e.printStackTrace();
+			System.out.println("Invalid Email Address: " + emailAddress);
 			return false;
 		}catch (MessagingException e) {
-			e.printStackTrace();
 			return false;
 		} 
 		return true;
