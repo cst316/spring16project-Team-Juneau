@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -42,11 +44,14 @@ public class ResourcesPanel extends JPanel {
     JButton removeResB = new JButton();
     JScrollPane scrollPane = new JScrollPane();
     JButton refreshB = new JButton();
+    JButton addDescB = new JButton();		//US-61.62
   JPopupMenu resPPMenu = new JPopupMenu();
   JMenuItem ppRun = new JMenuItem();
   JMenuItem ppRemoveRes = new JMenuItem();
   JMenuItem ppNewRes = new JMenuItem();
   JMenuItem ppRefresh = new JMenuItem();
+  JMenuItem ppAddDesc = new JMenuItem();	//US-61.62
+  JTextArea resDesc = new JTextArea();		//US-61.62
 
     public ResourcesPanel() {
         try {
@@ -107,6 +112,7 @@ public class ResourcesPanel extends JPanel {
 
                 removeResB.setEnabled(enbl); ppRemoveRes.setEnabled(enbl);
                 ppRun.setEnabled(enbl);
+                addDescB.setEnabled(enbl); ppAddDesc.setEnabled(enbl);
             }
         });
         refreshB.setBorderPainted(false);
@@ -124,6 +130,24 @@ public class ResourcesPanel extends JPanel {
         refreshB.setEnabled(true);
         refreshB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
+        
+        //US-61.62
+        addDescB.setBorderPainted(false);
+        addDescB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	addDescB_actionPerformed(e);
+            }
+        });
+        addDescB.setFocusable(false);
+        addDescB.setPreferredSize(new Dimension(24, 24));
+        addDescB.setRequestFocusEnabled(false);
+        addDescB.setToolTipText(Local.getString("Add Description"));
+        addDescB.setMinimumSize(new Dimension(24, 24));
+        addDescB.setMaximumSize(new Dimension(24, 24));
+        addDescB.setEnabled(false);
+        addDescB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/adddescres.png")));
+        
         resPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
     ppRun.setFont(new java.awt.Font("Dialog", 1, 11));
     ppRun.setText(Local.getString("Open resource")+"...");
@@ -161,10 +185,23 @@ public class ResourcesPanel extends JPanel {
     });
     ppRefresh.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/refreshres.png")));
 
+    
+    ppAddDesc.setFont(new java.awt.Font("Dialog", 1, 11));
+    ppAddDesc.setText(Local.getString("Add Description"));
+    ppAddDesc.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+    	  ppResDesc_actionPerformed(e);
+      }
+    });
+    ppAddDesc.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/adddescres.png")));
+    ppAddDesc.setEnabled(false);
+
+    
     toolBar.add(newResB, null);
         toolBar.add(removeResB, null);
         toolBar.addSeparator();
         toolBar.add(refreshB, null);
+        toolBar.add(addDescB, null);	//US-61.62
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.getViewport().add(resourcesTable, null);
         this.add(toolBar, BorderLayout.NORTH);
@@ -174,6 +211,7 @@ public class ResourcesPanel extends JPanel {
     resPPMenu.add(ppRemoveRes);
     resPPMenu.addSeparator();
     resPPMenu.add(ppRefresh);
+    resPPMenu.add(ppAddDesc);	//US-61.62
 	
 		// remove resources using the DEL key
 		resourcesTable.addKeyListener(new KeyListener() {
@@ -186,17 +224,20 @@ public class ResourcesPanel extends JPanel {
 			public void keyTyped(KeyEvent e){} 
 		});
     }
-
+    
     void newResB_actionPerformed(ActionEvent e) {
         AddResourceDialog dlg = new AddResourceDialog(App.getFrame(), Local.getString("New resource"));
         Dimension frmSize = App.getFrame().getSize();
         Point loc = App.getFrame().getLocation();
         dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
         dlg.setVisible(true);
+        
         if (dlg.CANCELLED)
             return;
         if (dlg.localFileRB.isSelected()) {
             String fpath = dlg.pathField.getText();
+            String resDesc = dlg.resDescField.getText();		//US-61.62 
+            
             MimeType mt = MimeTypesList.getMimeTypeForFile(fpath);
             if (mt.getMimeTypeId().equals("__UNKNOWN")) {
                 mt = addResourceType(fpath);
@@ -208,17 +249,17 @@ public class ResourcesPanel extends JPanel {
             // if file if projectFile, than copy the file and change url.
             if (dlg.projectFileCB.isSelected()) {
             	fpath = copyFileToProjectDir(fpath);
-            	CurrentProject.getResourcesList().addResource(fpath, false, true);
+            	CurrentProject.getResourcesList().addResource(fpath, resDesc, false, true);           	
             }
             else
-            	CurrentProject.getResourcesList().addResource(fpath);            	     	
+            	CurrentProject.getResourcesList().addResource(fpath, resDesc, false, true);
             
             resourcesTable.tableChanged();
         }
         else {
             if (!Util.checkBrowser())
                 return;
-            CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), true, false);
+            CurrentProject.getResourcesList().addResource(dlg.urlField.getText(), dlg.resDescField.getText(), true, false);
             resourcesTable.tableChanged();
         }
     }
@@ -375,6 +416,15 @@ public class ResourcesPanel extends JPanel {
     void refreshB_actionPerformed(ActionEvent e) {
         resourcesTable.tableChanged();
     }
+    
+    //US-61.62
+    void addDescB_actionPerformed(ActionEvent e) {
+    	
+    	//
+    	//
+    	//
+
+    }
 
   void ppRun_actionPerformed(ActionEvent e) {
     String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 3);
@@ -392,6 +442,11 @@ public class ResourcesPanel extends JPanel {
 
   void ppRefresh_actionPerformed(ActionEvent e) {
      resourcesTable.tableChanged();
+  }
+  
+  ////US-61.62
+  void ppResDesc_actionPerformed(ActionEvent e) {
+	  addDescB_actionPerformed(e);
   }
   
   /**

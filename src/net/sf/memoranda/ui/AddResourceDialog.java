@@ -19,6 +19,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -31,6 +33,7 @@ public class AddResourceDialog extends JDialog {
     JPanel dialogTitlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     JLabel header = new JLabel();
     ButtonGroup buttonGroup1 = new ButtonGroup();
+    JPanel resDescPanel = new JPanel(new GridBagLayout());		//US-61.62
     JPanel areaPanel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc;
     public JRadioButton localFileRB = new JRadioButton();
@@ -45,6 +48,11 @@ public class AddResourceDialog extends JDialog {
     JButton okB = new JButton();
     JButton cancelB = new JButton();
     public boolean CANCELLED = true;
+    //US-61.62
+    JTextField resDescField = new JTextField();
+    JScrollPane resDescScrollPane = new JScrollPane(resDescField);
+    JPanel jPanelResDesc = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JLabel jLabelResDesc = new JLabel();
 
     public AddResourceDialog(Frame frame, String title) {
         super(frame, title, true);
@@ -164,6 +172,24 @@ public class AddResourceDialog extends JDialog {
         areaPanel.add(urlField, gbc);
         this.getContentPane().add(areaPanel, BorderLayout.CENTER);
         
+        //US-61.62
+        jLabelResDesc.setMaximumSize(new Dimension(100,16));
+        jLabelResDesc.setMinimumSize(new Dimension(100,16));
+        jLabelResDesc.setText(Local.getString("Resource Description: "));
+        resDescField.setPreferredSize(new Dimension(250, 60));
+        //resDescField.setLineWrap(true);
+        //resDescField.setWrapStyleWord(true);
+        jPanelResDesc.add(jLabelResDesc, null);
+        jPanelResDesc.add(resDescField, null);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0; gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(15, 20, 5, 15);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        areaPanel.add(jPanelResDesc, gbc);
+        
+        
         okB.setEnabled(false);
         okB.setMaximumSize(new Dimension(100, 26));
         okB.setMinimumSize(new Dimension(100, 26));
@@ -218,6 +244,7 @@ public class AddResourceDialog extends JDialog {
         checkOkEnabled();
 		urlField.select(0,0);
 		pathField.select(0,pathField.getText().length());
+		resDescField.select(0,resDescField.getText().length());		//US-61.62
 		pathField.requestFocus();
 	}
 

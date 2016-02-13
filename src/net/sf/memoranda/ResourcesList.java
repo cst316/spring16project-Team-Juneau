@@ -23,7 +23,7 @@ public interface ResourcesList {
     
     Resource getResource(String path);
     
-    void addResource(String path, boolean isInternetShortcut, boolean isProjectFile);
+    void addResource(String path, String resDesc, boolean isInternetShortcut, boolean isProjectFile);
     
     void addResource(String path);
     
