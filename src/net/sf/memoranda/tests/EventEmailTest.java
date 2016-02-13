@@ -1,9 +1,11 @@
-package net.sf.memoranda;
+package net.sf.memoranda.tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import net.sf.memoranda.EventEmail;
 
 public class EventEmailTest {
 	
