@@ -57,7 +57,10 @@ public class ResourcesTable extends JTable {
         for (int i = 0; i < 5; i++) {
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(32767);
+                column.setPreferredWidth(200);
+            }
+            if (i == 4) {
+            	column.setPreferredWidth(400);
             }
             else {
                 column.setMinWidth(100);

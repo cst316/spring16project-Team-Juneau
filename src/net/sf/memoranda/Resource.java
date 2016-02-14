@@ -44,11 +44,11 @@ public class Resource {
         return _resDesc;
     }
     
-    /*//US-61.62
+    //US-61.62
     public void setResDesc(String resDesc) {
     	this._resDesc = resDesc;
     }
-    */
+    
     
     public boolean isInetShortcut() {
         return _isInetShortcut;

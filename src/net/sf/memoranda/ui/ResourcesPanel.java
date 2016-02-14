@@ -26,12 +26,15 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sf.memoranda.CurrentProject;
 import net.sf.memoranda.Resource;
+import net.sf.memoranda.ResourcesListImpl;
 import net.sf.memoranda.util.AppList;
 import net.sf.memoranda.util.CurrentStorage;
 import net.sf.memoranda.util.Local;
 import net.sf.memoranda.util.MimeType;
 import net.sf.memoranda.util.MimeTypesList;
 import net.sf.memoranda.util.Util;
+import nu.xom.Attribute;
+import nu.xom.Elements;
 
 import java.io.*;
 
@@ -187,7 +190,7 @@ public class ResourcesPanel extends JPanel {
 
     
     ppAddDesc.setFont(new java.awt.Font("Dialog", 1, 11));
-    ppAddDesc.setText(Local.getString("Add Description"));
+    ppAddDesc.setText(Local.getString("Edit Description"));
     ppAddDesc.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(ActionEvent e) {
     	  ppResDesc_actionPerformed(e);
@@ -419,11 +422,13 @@ public class ResourcesPanel extends JPanel {
     
     //US-61.62
     void addDescB_actionPerformed(ActionEvent e) {
-    	
-    	//
-    	//
-    	//
-
+    /*
+    	String newResDesc = JOptionPane.showInputDialog(this, "Type in new description:");
+    	String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 0);
+    	Resource r = CurrentProject.getResourcesList().getResource(path);
+    	r.setResDesc(newResDesc);
+        resourcesTable.tableChanged();
+	*/
     }
 
   void ppRun_actionPerformed(ActionEvent e) {

@@ -23,6 +23,7 @@ public interface ResourcesList {
     
     Resource getResource(String path);
     
+    //US-61.62
     void addResource(String path, String resDesc, boolean isInternetShortcut, boolean isProjectFile);
     
     void addResource(String path);

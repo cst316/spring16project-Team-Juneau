@@ -88,7 +88,7 @@ public class ResourcesListImpl implements ResourcesList {
     }
 
     public void addResource(String path) {
-        addResource(path);
+        
     }
 
     /**
@@ -120,6 +120,7 @@ public class ResourcesListImpl implements ResourcesList {
     public Document getXMLContent() {
         return _doc;
     }
+
     
     /**
      * @see net.sf.memoranda.ResourcesList#getResourcesForTask(java.lang.String)

@@ -176,7 +176,7 @@ public class AddResourceDialog extends JDialog {
         jLabelResDesc.setMaximumSize(new Dimension(100,16));
         jLabelResDesc.setMinimumSize(new Dimension(100,16));
         jLabelResDesc.setText(Local.getString("Resource Description: "));
-        resDescField.setPreferredSize(new Dimension(250, 60));
+        resDescField.setPreferredSize(new Dimension(300, 24));
         //resDescField.setLineWrap(true);
         //resDescField.setWrapStyleWord(true);
         jPanelResDesc.add(jLabelResDesc, null);
