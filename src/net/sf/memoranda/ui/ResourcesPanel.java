@@ -138,7 +138,7 @@ public class ResourcesPanel extends JPanel {
         addDescB.setBorderPainted(false);
         addDescB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	addDescB_actionPerformed(e);
+            	//addDescB_actionPerformed(e);
             }
         });
         addDescB.setFocusable(false);
@@ -204,7 +204,7 @@ public class ResourcesPanel extends JPanel {
         toolBar.add(removeResB, null);
         toolBar.addSeparator();
         toolBar.add(refreshB, null);
-        toolBar.add(addDescB, null);	//US-61.62
+        //toolBar.add(addDescB, null);	//US-61.62
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.getViewport().add(resourcesTable, null);
         this.add(toolBar, BorderLayout.NORTH);
@@ -214,7 +214,7 @@ public class ResourcesPanel extends JPanel {
     resPPMenu.add(ppRemoveRes);
     resPPMenu.addSeparator();
     resPPMenu.add(ppRefresh);
-    resPPMenu.add(ppAddDesc);	//US-61.62
+    //resPPMenu.add(ppAddDesc);	//US-61.62
 	
 		// remove resources using the DEL key
 		resourcesTable.addKeyListener(new KeyListener() {
@@ -420,16 +420,14 @@ public class ResourcesPanel extends JPanel {
         resourcesTable.tableChanged();
     }
     
+    /*
     //US-61.62
     void addDescB_actionPerformed(ActionEvent e) {
-    /*
-    	String newResDesc = JOptionPane.showInputDialog(this, "Type in new description:");
-    	String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 0);
-    	Resource r = CurrentProject.getResourcesList().getResource(path);
-    	r.setResDesc(newResDesc);
+    	String newResDesc = JOptionPane.showInputDialog(this, "Type in new description:");    	
         resourcesTable.tableChanged();
-	*/
+	
     }
+    */
 
   void ppRun_actionPerformed(ActionEvent e) {
     String path = (String) resourcesTable.getValueAt(resourcesTable.getSelectedRow(), 3);
@@ -451,7 +449,7 @@ public class ResourcesPanel extends JPanel {
   
   ////US-61.62
   void ppResDesc_actionPerformed(ActionEvent e) {
-	  addDescB_actionPerformed(e);
+	  //addDescB_actionPerformed(e);
   }
   
   /**

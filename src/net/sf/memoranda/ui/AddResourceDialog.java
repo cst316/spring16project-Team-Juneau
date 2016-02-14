@@ -258,6 +258,7 @@ public class AddResourceDialog extends JDialog {
         checkOkEnabled();
 		pathField.select(0,0);
 		urlField.select(0,urlField.getText().length());
+		resDescField.select(0,resDescField.getText().length());		//US-61.62
 		urlField.requestFocus();
 	}
 
