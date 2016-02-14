@@ -24,7 +24,6 @@ public class Login {
 		else
 		{
 			loginOpen=true;
-			System.out.println(Configuration.get("USER_PASSWORD"));
 			new LoginDialog();
 		}
 	}

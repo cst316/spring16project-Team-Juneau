@@ -124,8 +124,16 @@ public class NewPasswordDialog extends JFrame {
 	  void jButton1_actionPerformed(ActionEvent e) {
 	      if(password1.getText().equals(password2.getText()))
 	      {
+	    	  if(password1.getText().equals(""))
+		       {
+		       Configuration.put("USER_PASSWORD", "none");
+		       Configuration.saveConfig();
+		       }
+	    	  else
+	    	  {
 	    	  Configuration.put("USER_PASSWORD", password1.getText());
 	    	  Configuration.saveConfig();
+	    	  }
 	    	  Login.cancelled();
 	    	  this.dispose();
 	      }
@@ -137,8 +145,12 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
+	       if(Configuration.get("USER_PASSWORD").equals("default")
+	    		   ||Configuration.get("USER_PASSWORD").equals(""))
+	       {
 	       Configuration.put("USER_PASSWORD", "none");
 	       Configuration.saveConfig();
+	       }
 	       Login.cancelled();
 	  } 
 

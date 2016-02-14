@@ -118,6 +118,10 @@ public class PreferencesDialog extends JDialog {
 	JRadioButton soundBeepRB = new JRadioButton();
 
 	JLabel jLabel6 = new JLabel();
+	
+	JLabel passwordLbl = new JLabel();
+	
+	JButton passwordChange = new JButton();
 
 	JTextField soundFile = new JTextField();
 
@@ -468,6 +472,31 @@ public class PreferencesDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		GeneralPanel.add(userEmail, gbc);
+		
+		
+		passwordLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		passwordLbl.setText(Local.getString("Change or set password:"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 17;
+		gbc.insets = new Insets(2, 10, 10, 15);
+		gbc.anchor = GridBagConstraints.EAST;
+		GeneralPanel.add(passwordLbl, gbc);
+		
+		passwordChange.setMaximumSize(new Dimension(100, 25));
+		passwordChange.setPreferredSize(new Dimension(100, 25));
+		passwordChange.setText(Local.getString("Password"));
+		passwordChange.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordChange_actionPerformed(e);
+			}
+		});
+		gbc.gridx = 1;
+		gbc.gridy = 17;
+		gbc.insets = new Insets(0,0,5,10);
+		gbc.anchor = GridBagConstraints.WEST;
+		GeneralPanel.add(passwordChange, gbc);
+		
 		
 
 		// Build Tab2
@@ -829,6 +858,12 @@ public class PreferencesDialog extends JDialog {
 	void okB_actionPerformed(ActionEvent e) {
 		apply();
 		this.dispose();
+	}
+	
+	void passwordChange_actionPerformed(ActionEvent e) {
+		apply();
+		this.dispose();
+		new NewPasswordDialog();
 	}
 
 	void cancelB_actionPerformed(ActionEvent e) {
