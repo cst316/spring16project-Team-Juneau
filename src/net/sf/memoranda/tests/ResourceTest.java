@@ -1,6 +1,9 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -44,6 +47,7 @@ public class ResourceTest {
 
 	@Test
 	public void resourceTest() {
+		assertEquals(r1.getPath(), r2.getPath());
 		assertEquals(r1.getPath(), r2.getPath());
 		assertEquals(r1.getResDesc(), r2.getResDesc());
 		assertEquals(r1.isInetShortcut(), r2.isInetShortcut());

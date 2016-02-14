@@ -1,6 +1,9 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,22 +12,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import net.sf.memoranda.Project;
-import net.sf.memoranda.Resource;
 import net.sf.memoranda.ResourcesList;
 import net.sf.memoranda.ResourcesListImpl;
-import nu.xom.Document;
-
-
 
 public class ResourcesListTest {
 
-	private Document d1;
 	private Project p1;
 	private Project p2;
 	private ResourcesList rList1;
 	private ResourcesList rList2;
 	private ResourcesList rList3;
-
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
