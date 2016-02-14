@@ -7,7 +7,7 @@ import net.sf.memoranda.util.Configuration;
 public class Login {
 	
 	static boolean cancelled = false;
-	static boolean valid = false; 
+	static boolean valid = true; 
 	static boolean loginOpen = false;
 
 	public static void getDetails(){
@@ -47,5 +47,9 @@ public class Login {
 	public static void cancelled()
 	{
 		cancelled = true;
+	}
+	public static void invalid()
+	{
+		valid = false; 
 	}
 }

@@ -44,9 +44,9 @@ public class NewLoginDialog extends JFrame {
 	    catch(Exception ex) {
 	      new ExceptionDialog(ex);
 	    }
-	    textLabel.setText("<html>This is your first time starting memoranda.<br><br>"
-	    		+ "Would you like to set a pssword?<br><br>" + "Can change your mind later in preferences.");
-	    this.setSize(300,200);
+	    textLabel.setText("<html>Hello, new user!<br><br>"
+	    		+ "Would you like to set a pssword?<br><br>");
+	    this.setSize(300,150);
 	    this.setLocationRelativeTo(null);
 	    this.setVisible(true);    
 	    this.toFront();

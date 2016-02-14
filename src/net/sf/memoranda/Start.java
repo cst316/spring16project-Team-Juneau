@@ -62,7 +62,7 @@ public class Start {
         }
         
         	//Login 
-	        while(!Login.isValid()&&!Login.isCancelled()){
+	        while(Login.isValid()&&!Login.isCancelled()){
 		        try {
 					SwingUtilities.invokeAndWait(new Runnable(){
 						public void run(){
@@ -82,6 +82,11 @@ public class Start {
 		        {
 		            e.printStackTrace();
 		        }
+	        }
+	        
+	        if(!Login.isValid())
+	        {
+	        	System.exit(0);
 	        }
         
         

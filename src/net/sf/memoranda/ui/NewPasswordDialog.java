@@ -137,6 +137,8 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
+	       Configuration.put("USER_PASSWORD", "none");
+	       Configuration.saveConfig();
 	       Login.cancelled();
 	  } 
 

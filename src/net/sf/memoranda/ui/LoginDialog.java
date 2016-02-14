@@ -127,6 +127,7 @@ public class LoginDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
+	       Login.invalid();
 	  } 
 
 }
