@@ -56,10 +56,11 @@ public class EventsManager {
 
 	}
 
-	public static void createSticker(String text, int prior) {
+	public static void createSticker(String text, int prior, String sDate) {
 		Element el = new Element("sticker");
 		el.addAttribute(new Attribute("id", Util.generateId()));
 		el.addAttribute(new Attribute("priority", prior+""));
+		el.addAttribute(new Attribute("startDate", sDate));
 		el.appendChild(text);
 		_root.appendChild(el);
 	}
