@@ -20,6 +20,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -137,6 +139,14 @@ public class AppFrame extends JFrame {
                         p1Import_actionPerformed(e);
                 }
         };
+        
+    public Action letsRollAction = 
+		new AbstractAction(Local.getString("Let's Roll") + "..."){
+		
+		public void actionPerformed(ActionEvent e){
+			showDiceDialog();
+		}
+    };
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
@@ -243,6 +253,7 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpWeb = new JMenuItem();
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
+    JMenuItem jMenuLetsRoll = new JMenuItem(letsRollAction);
 
     //Construct the frame
     public AppFrame() {
@@ -307,6 +318,16 @@ public class AppFrame extends JFrame {
                 jMenuHelpAbout_actionPerformed(e);
             }
         });
+        
+        /*
+        jMenuLetsRoll.setText(Local.getString("Lets Roll") + "...");
+        jMenuLetsRoll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                letsRollAction(e);
+            }
+        });
+        */
+        
         //jButton3.setIcon(image3);
         jButton3.setToolTipText(Local.getString("Help"));
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -467,6 +488,7 @@ public class AppFrame extends JFrame {
         jMenuHelp.add(jMenuHelpBug);
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
+        jMenuHelp.add(jMenuLetsRoll);
         
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
@@ -837,6 +859,30 @@ public class AppFrame extends JFrame {
         dlg.setVisible(true);
     }
     
+    public void showDiceDialog(){
+    	JOptionPane dlg = new JOptionPane("Lets Roll!!", JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dialog = dlg.createDialog(null, "Let's Roll");
+        dialog.show();
+    	Object selectedVal = dlg.getValue();
+    	//System.out.println("[DEBUG] selectedVal for showDiceIntro = "+selectedVal.toString());
+    	if(selectedVal.toString().equalsIgnoreCase("0")){
+    		showDiceRollDialog();    		
+    	}
+    }
+    
+    public void showDiceRollDialog(){
+    	Die droll = new Die();
+    	int dieVal = droll.roll();
+    	//JOptionPane.showConfirmDialog(null, "Your result was " + dieVal + " Press OK to roll again.", "Die Roll", JOptionPane.OK_CANCEL_OPTION);
+    	JOptionPane dlg = new JOptionPane("Your result was (" + dieVal + ")\nPress OK to roll again.", JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        JDialog dialog = dlg.createDialog(null, "Let's Roll");
+        dialog.show();
+    	Object selectedVal = dlg.getValue();
+    	//System.out.println("[DEBUG] selectedVal = "+selectedVal.toString() + " Roll = " + dieVal);
+    	if(selectedVal.toString().equalsIgnoreCase("0")){
+    		showDiceRollDialog();    		
+    	}
+    }
             protected void ppExport_actionPerformed(ActionEvent e) {
                 // Fix until Sun's JVM supports more locales...
                 UIManager.put(
