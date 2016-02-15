@@ -43,10 +43,10 @@ public class ResourcesListImpl implements ResourcesList {
     }
 
     public Vector getAllResources() {
-        Vector v = new Vector();
+        Vector<Resource> v = new Vector();
         Elements rs = _root.getChildElements("resource");
         for (int i = 0; i < rs.size(); i++)
-            v.add(new Resource(rs.get(i).getAttribute("path").getValue(), rs.get(i).getAttribute("isInetShortcut") != null, rs.get(i).getAttribute("isProjectFile") != null));
+        	v.add(new Resource(rs.get(i).getAttribute("path").getValue(), rs.get(i).getAttribute("resDesc").getValue(), rs.get(i).getAttribute("isInetShortcut") != null, rs.get(i).getAttribute("isProjectFile") != null));
         return v;
     }
 
@@ -57,7 +57,7 @@ public class ResourcesListImpl implements ResourcesList {
         Elements rs = _root.getChildElements("resource");
         for (int i = 0; i < rs.size(); i++)
             if (rs.get(i).getAttribute("path").getValue().equals(path))
-                return new Resource(rs.get(i).getAttribute("path").getValue(), rs.get(i).getAttribute("isInetShortcut") != null, rs.get(i).getAttribute("isProjectFile") != null);
+                return new Resource(rs.get(i).getAttribute("path").getValue(), rs.get(i).getAttribute("resDesc").getValue(), rs.get(i).getAttribute("isInetShortcut") != null, rs.get(i).getAttribute("isProjectFile") != null);
         return null;
     }
 
@@ -75,10 +75,11 @@ public class ResourcesListImpl implements ResourcesList {
     /**
      * @see net.sf.memoranda.ResourcesList#addResource(java.lang.String, boolean)
      */
-    public void addResource(String path, boolean isInternetShortcut, boolean isProjectFile) {
+    public void addResource(String path, String resDesc, boolean isInternetShortcut, boolean isProjectFile) {
         Element el = new Element("resource");
         el.addAttribute(new Attribute("id", Util.generateId()));
         el.addAttribute(new Attribute("path", path));  
+        el.addAttribute(new Attribute("resDesc", resDesc));		//US-61.62
         if (isInternetShortcut)
             el.addAttribute(new Attribute("isInetShortcut", "true"));
         if (isProjectFile)
@@ -87,7 +88,7 @@ public class ResourcesListImpl implements ResourcesList {
     }
 
     public void addResource(String path) {
-        addResource(path, false, false);
+        
     }
 
     /**
@@ -119,6 +120,7 @@ public class ResourcesListImpl implements ResourcesList {
     public Document getXMLContent() {
         return _doc;
     }
+
     
     /**
      * @see net.sf.memoranda.ResourcesList#getResourcesForTask(java.lang.String)

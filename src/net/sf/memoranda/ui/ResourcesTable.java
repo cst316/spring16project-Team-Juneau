@@ -54,10 +54,13 @@ public class ResourcesTable extends JTable {
     }
 
     void initColumsWidth() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             TableColumn column = getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(32767);
+                column.setPreferredWidth(200);
+            }
+            if (i == 4) {
+            	column.setPreferredWidth(400);
             }
             else {
                 column.setMinWidth(100);
@@ -123,7 +126,8 @@ public class ResourcesTable extends JTable {
                 Local.getString("Name"),
                 Local.getString("Type"),
                 Local.getString("Date modified"),
-                Local.getString("Path")};
+                Local.getString("Path"),
+                Local.getString("Description")};		//US-61.62
 
         public String getColumnName(int i) {
             return columnNames[i];
@@ -154,13 +158,16 @@ public class ResourcesTable extends JTable {
                             return d;/*Local.getDateString(d, java.text.DateFormat.SHORT) +" "+
                                    Local.getTimeString(d);*/
                     case 3:return f.getPath();
+                    case 4:return r.getResDesc();	//US-61.62
                 }
             }
             else {
                 if (col == 0)
                     return r.getPath();
-                else if (col == 1)
+                if (col == 1)
                     return Local.getString("Internet shortcut");
+                if (col == 4)
+                	return r.getResDesc();
                 else
                     return "";                
             }

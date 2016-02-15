@@ -15,6 +15,7 @@ package net.sf.memoranda;
 public class Resource {
     
     private String _path = null;	// the path to the file
+    private String _resDesc = null;		//US-61.62
     private boolean _isInetShortcut = false; // true if Internet shortcut
     private boolean _isProjectFile = false;	// true if file is in project directory 
     /**
@@ -23,19 +24,31 @@ public class Resource {
      * @param isInetShortcut, if the resource is a internet shortcut.
      * @param isProjectFile, if file is copied to project directory.
      */
-    public Resource(String path, boolean isInetShortcut, boolean isProjectFile) {
+    public Resource(String path, String resDesc, boolean isInetShortcut, boolean isProjectFile) {
         _path = path;
+        _resDesc = resDesc;		//US-61.62
         _isInetShortcut = isInetShortcut;
         _isProjectFile = isProjectFile;
     }
     
     public Resource(String path) {
-        _path = path;         
+        _path = path;     
     }
     
     public String getPath() {
         return _path;
     }
+    
+    //US-61.62
+    public String getResDesc() {
+        return _resDesc;
+    }
+    
+    //US-61.62
+    public void setResDesc(String resDesc) {
+    	this._resDesc = resDesc;
+    }
+    
     
     public boolean isInetShortcut() {
         return _isInetShortcut;
