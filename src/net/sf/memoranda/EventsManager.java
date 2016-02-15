@@ -117,11 +117,13 @@ public class EventsManager {
 		int hh,
 		int mm,
 		String text,
-		String disc) {
+		String disc,
+		boolean emailNotify) {
 		Element el = new Element("event");
 		el.addAttribute(new Attribute("id", Util.generateId()));
 		el.addAttribute(new Attribute("hour", String.valueOf(hh)));
 		el.addAttribute(new Attribute("min", String.valueOf(mm)));
+		el.addAttribute(new Attribute("emailNotify",String.valueOf(emailNotify)));
 		el.appendChild(text);
 		el.addAttribute(new Attribute("discription", disc)); //added line ------------- EditJR
 		Day d = getDay(date);
@@ -140,7 +142,8 @@ public class EventsManager {
 		int mm,
 		String text,
 		String disc, //added this line ------------- EditJR
-		boolean workDays) {
+		boolean workDays,
+		boolean emailNotify) {
 		Element el = new Element("event");
 		Element rep = _root.getFirstChildElement("repeatable");
 		if (rep == null) {
@@ -157,6 +160,7 @@ public class EventsManager {
 		el.addAttribute(new Attribute("period", String.valueOf(period)));
 		// new attribute for working days - ivanrise
 		el.addAttribute(new Attribute("workingDays",String.valueOf(workDays)));
+		el.addAttribute(new Attribute("emailNotify",String.valueOf(emailNotify)));
 		el.appendChild(text);
 		el.addAttribute(new Attribute("description", disc)); //added this line ---------------- EditJR
 		rep.appendChild(el);

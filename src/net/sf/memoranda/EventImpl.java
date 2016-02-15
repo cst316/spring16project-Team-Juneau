@@ -144,8 +144,17 @@ public class EventImpl implements Event, Comparable {
      */
 	public boolean getWorkingDays() {
         Attribute a = _elem.getAttribute("workingDays");
-        if (a != null && a.getValue().equals("true")) return true;
+        if (a != null && a.getValue().equals("true")) 
+        	return true;
         return false;
+	}
+	
+	public boolean getEmailNotify() {
+		Attribute a = _elem.getAttribute("emailNotify");
+		if (a!= null && a.getValue().equals("true")){
+			return true;
+		}
+		return false;
 	}
 	
 	public int compareTo(Object o) {

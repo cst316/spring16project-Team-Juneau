@@ -92,6 +92,10 @@ public class PreferencesDialog extends JDialog {
 	JButton browseB = new JButton();
 
 	JLabel lblExit = new JLabel();
+	
+	JLabel lblEmail = new JLabel();
+	
+	JTextField userEmail = new JTextField();
 
 	JPanel soundPanel = new JPanel();
 
@@ -114,6 +118,10 @@ public class PreferencesDialog extends JDialog {
 	JRadioButton soundBeepRB = new JRadioButton();
 
 	JLabel jLabel6 = new JLabel();
+	
+	JLabel passwordLbl = new JLabel();
+	
+	JButton passwordChange = new JButton();
 
 	JTextField soundFile = new JTextField();
 
@@ -445,6 +453,51 @@ public class PreferencesDialog extends JDialog {
 		gbc.insets = new Insets(2, 0, 10, 10);
 		gbc.anchor = GridBagConstraints.WEST;
 		GeneralPanel.add(askConfirmChB, gbc);
+		
+		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblEmail.setText(Local.getString("Email:"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 16;
+		gbc.insets = new Insets(2, 10, 10, 15);
+		gbc.anchor = GridBagConstraints.EAST;
+		GeneralPanel.add(lblEmail, gbc);
+		
+
+		
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 16;
+		gbc.insets = new Insets(0, 0, 5, 10);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		GeneralPanel.add(userEmail, gbc);
+		
+		
+		passwordLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		passwordLbl.setText(Local.getString("Change or set password:"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 17;
+		gbc.insets = new Insets(2, 10, 10, 15);
+		gbc.anchor = GridBagConstraints.EAST;
+		GeneralPanel.add(passwordLbl, gbc);
+		
+		passwordChange.setMaximumSize(new Dimension(100, 25));
+		passwordChange.setPreferredSize(new Dimension(100, 25));
+		passwordChange.setText(Local.getString("Password"));
+		passwordChange.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				passwordChange_actionPerformed(e);
+			}
+		});
+		gbc.gridx = 1;
+		gbc.gridy = 17;
+		gbc.insets = new Insets(0,0,5,10);
+		gbc.anchor = GridBagConstraints.WEST;
+		GeneralPanel.add(passwordChange, gbc);
+		
+		
 
 		// Build Tab2
 		rstPanelBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -560,6 +613,8 @@ public class PreferencesDialog extends JDialog {
 				.toString().equalsIgnoreCase("yes"));
 		firstdow.setSelected(Configuration.get("FIRST_DAY_OF_WEEK").toString()
 				.equalsIgnoreCase("mon"));
+		
+		
 
 		enableCustomLF(false);
 		String lf = Configuration.get("LOOK_AND_FEEL").toString();
@@ -596,6 +651,12 @@ public class PreferencesDialog extends JDialog {
 		if (Configuration.get("NOTIFY_SOUND").equals("")) {
 			Configuration.put("NOTIFY_SOUND", "DEFAULT");
 		}
+		
+		String email = Configuration.get("USER_EMAIL").toString();
+		if(email.equalsIgnoreCase("default"))
+			userEmail.setText("");
+		else
+			userEmail.setText(email);
 
 		boolean enableSnd = !Configuration.get("NOTIFY_SOUND").toString()
 				.equalsIgnoreCase("DISABLED");
@@ -727,6 +788,17 @@ public class PreferencesDialog extends JDialog {
 						"Make sure that specified look-and-feel library classes are on the CLASSPATH.");
 			}
 		}
+		
+		String userEmail = Configuration.get("USER_EMAIL").toString();
+		String newUserEmail = this.userEmail.getText();
+		
+		if(!userEmail.equalsIgnoreCase(newUserEmail))
+			if(newUserEmail.equalsIgnoreCase(""))
+				Configuration.put("USER_EMAIL","default");
+			else
+				Configuration.put("USER_EMAIL", newUserEmail);
+		
+		
 		String brPath = this.browserPath.getText();
 		if (new java.io.File(brPath).isFile()) {
 			MimeTypesList.getAppList().setBrowserExec(brPath);
@@ -786,6 +858,12 @@ public class PreferencesDialog extends JDialog {
 	void okB_actionPerformed(ActionEvent e) {
 		apply();
 		this.dispose();
+	}
+	
+	void passwordChange_actionPerformed(ActionEvent e) {
+		apply();
+		this.dispose();
+		new NewPasswordDialog();
 	}
 
 	void cancelB_actionPerformed(ActionEvent e) {

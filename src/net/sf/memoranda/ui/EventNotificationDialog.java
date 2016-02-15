@@ -23,6 +23,7 @@ import java.io.File;
 import java.net.URL;
 
 
+
 /*$Id: EventNotificationDialog.java,v 1.8 2004/10/18 19:08:56 ivanrise Exp $*/
 public class EventNotificationDialog extends JFrame {
   JPanel panel1 = new JPanel();

@@ -8,6 +8,7 @@
 package net.sf.memoranda;
 
 import net.sf.memoranda.ui.EventNotificationDialog;
+import net.sf.memoranda.util.Configuration;
 
 /**
  *  
@@ -30,6 +31,11 @@ public class DefaultEventNotifier implements EventNotificationListener {
 			"Memoranda event",
 			ev.getTimeString(),
 			ev.getText());
+		
+		if(ev.getEmailNotify()){
+		EventEmail newMail = new EventEmail(Configuration.get("USER_EMAIL").toString(),ev.getText());
+		boolean email =	newMail.sendNewEmail();
+		}
 	}
 	/**
 	 * @see net.sf.memoranda.EventNotificationListener#eventsChanged()

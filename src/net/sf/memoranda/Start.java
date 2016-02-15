@@ -8,8 +8,11 @@
  */
 package net.sf.memoranda;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import javax.swing.SwingUtilities;
 
 import net.sf.memoranda.ui.*;
 import net.sf.memoranda.util.Configuration;
@@ -58,6 +61,35 @@ public class Start {
             new SLThread().start();
         }
         
+        	//Login 
+	        while(Login.isValid()&&!Login.isCancelled()){
+		        try {
+					SwingUtilities.invokeAndWait(new Runnable(){
+						public void run(){
+							if(!Login.isOpen()){
+								Login.getDetails();
+							}
+						}
+					});
+				} catch (InvocationTargetException | InterruptedException e) {
+					e.printStackTrace();
+				}
+		        try
+		        {
+		            SLThread.sleep(50);
+		        }
+		        catch (Exception e)
+		        {
+		            e.printStackTrace();
+		        }
+	        }
+	        
+	        if(!Login.isValid())
+	        {
+	        	System.exit(0);
+	        }
+        
+        
         //System.out.println(EventsScheduler.isEventScheduled());
         if ((args.length == 0) || (!args[0].equals("-m"))) {
             app = new App(true);
@@ -86,3 +118,4 @@ class SLThread extends Thread {
         }
     }
 }
+
