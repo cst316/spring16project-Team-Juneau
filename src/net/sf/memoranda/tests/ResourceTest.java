@@ -1,9 +1,6 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,10 +55,10 @@ public class ResourceTest {
 		assertEquals(r5.isInetShortcut(), r6.isInetShortcut());
 		assertEquals(r5.isProjectFile(), r6.isProjectFile());
 		
-		assertNotEquals(r3.getPath(), r4.getPath());
-		assertNotEquals(r3.getResDesc(), r4.getResDesc());
-		assertNotEquals(r3.isInetShortcut(), r4.isInetShortcut());
-		assertNotEquals(r3.isProjectFile(), r4.isProjectFile());
+		assertNotSame(r3.getPath(), r4.getPath());
+		assertNotSame(r3.getResDesc(), r4.getResDesc());
+		assertNotSame(r3.isInetShortcut(), r4.isInetShortcut());
+		assertNotSame(r3.isProjectFile(), r4.isProjectFile());
 
 		assertNull(r7);
 		assertNotNull(r1);

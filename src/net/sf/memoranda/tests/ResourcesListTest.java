@@ -1,9 +1,6 @@
 package net.sf.memoranda.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -95,9 +92,6 @@ public class ResourcesListTest {
 		rList1.addResource("image.png", "image1", false, true);
 		assertNotNull(rList1);
 		assertEquals(3, rList1.getAllResourcesCount());
-		assertNotEquals(5, rList1.getAllResourcesCount());
-
-		
 	}
 
 }
