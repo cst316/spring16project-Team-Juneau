@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -118,14 +121,81 @@ public class AgendaPanel extends JPanel {
 						if (!dlg.CANCELLED) {
 							String txt = dlg.getStickerText();
 							int sP = dlg.getPriority();
+							Date date = new Date();
+							DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+							String sDate = (dateFormat.format(date));
 							txt = txt.replaceAll("\\n", "<br>");
                             txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+"; \">"+txt+"</div>";
-							EventsManager.createSticker(txt, sP);
+							EventsManager.createSticker(txt, sP, sDate);
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
 						System.out.println("agregué un sticker");
-					} else if (d.startsWith("memoranda:expandsubtasks")) {
+					}else if (d.startsWith("memoranda:sortnewest")) {
+						//sort stickers by newest first
+						String sort = "newestDate";
+						viewer.setText(AgendaGenerator.getAgenda(CurrentDate.get(),expandedTasks,sort));
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								if(gotoTask != null) {
+									viewer.scrollToReference(gotoTask);
+									scrollPane.setViewportView(viewer);
+									Util.debug("Set view port to " + gotoTask);
+								}
+							}
+						});
+
+						Util.debug("Summary updated.");
+						
+					}else if (d.startsWith("memoranda:sortoldest")) {
+						//sort stickers by oldest first
+						String sort = "oldestDate";
+						viewer.setText(AgendaGenerator.getAgenda(CurrentDate.get(),expandedTasks,sort));
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								if(gotoTask != null) {
+									viewer.scrollToReference(gotoTask);
+									scrollPane.setViewportView(viewer);
+									Util.debug("Set view port to " + gotoTask);
+								}
+							}
+						});
+
+						Util.debug("Summary updated.");
+						
+					}else if (d.startsWith("memoranda:sortpriority")) {
+						//sort stickers by highest priority first
+						String sort = "sortpriority";
+						viewer.setText(AgendaGenerator.getAgenda(CurrentDate.get(),expandedTasks,sort));
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								if(gotoTask != null) {
+									viewer.scrollToReference(gotoTask);
+									scrollPane.setViewportView(viewer);
+									Util.debug("Set view port to " + gotoTask);
+								}
+							}
+						});
+
+						Util.debug("Summary updated.");
+						
+					}else if (d.startsWith("memoranda:sortcolor")) {
+						//sort stickers by color
+						String sort = "color";
+						viewer.setText(AgendaGenerator.getAgenda(CurrentDate.get(),expandedTasks,sort));
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								if(gotoTask != null) {
+									viewer.scrollToReference(gotoTask);
+									scrollPane.setViewportView(viewer);
+									Util.debug("Set view port to " + gotoTask);
+								}
+							}
+						});
+
+						Util.debug("Summary updated.");
+						
+					}else if (d.startsWith("memoranda:expandsubtasks")) {
 						String id = d.split("#")[1];
 						gotoTask = id;
 						expandedTasks.add(id);
@@ -184,8 +254,14 @@ public class AgendaPanel extends JPanel {
 							sP = dlg.getPriority();
 							txt = txt.replaceAll("\\n", "<br>");
 							txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+";\">"+txt+"</div>";
+							//DEBUG System.out.println("dlg.getStickerText() = " + txt);
 							EventsManager.removeSticker(id);
-							EventsManager.createSticker(txt, sP);
+							//when a sticker is edited the date it was "started" is updated to reflect the last time it was modified.
+							Date date = new Date();
+							DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+							String sDate = (dateFormat.format(date));
+							
+							EventsManager.createSticker(txt, sP, sDate);
 							CurrentStorage.get().storeEventsManager();
 						 }
 						 refresh(CurrentDate.get());
