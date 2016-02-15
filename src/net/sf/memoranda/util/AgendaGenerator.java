@@ -11,6 +11,9 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
 import java.util.Collections;
 
 import net.sf.memoranda.CurrentProject;
@@ -43,6 +46,7 @@ public class AgendaGenerator {
 					+ "<body><table width=\"100%\" height=\"100%\" border=\"0\" cellpadding=\"4\" cellspacing=\"4\">\n"
 					+ "<tr>\n";
 	static String FOOTER = "</td></tr></table></body></html>";
+	static String stickerSort = "priority";
 
 	static String generateTasksInfo(Project p, CalendarDate date, Collection expandedTasks) {    	    	
 		TaskList tl;
@@ -377,7 +381,13 @@ public class AgendaGenerator {
 				.class
 				.getResource("resources/agenda/removesticker.gif")
 				.toExternalForm();
-		 String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:importstickers\"><b>"+Local.getString("Import sticker")+"</b></a></td><td><a href=\"memoranda:exportstickerst\"><b>"+Local.getString("Export sticker as .txt")+"</b></a><td><a href=\"memoranda:exportstickersh\"><b>"+Local.getString("Export sticker as .html")+"</b></a></td></tr></table>"
+		 String s = "<hr><hr><table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td width=\"33%\"><a href=\"memoranda:importstickers\"><b>"+Local.getString("Import sticker")+"</b></a></td><td width=\"33%\"><a href=\"memoranda:exportstickerst\"><b>"+Local.getString("Export sticker as .txt")+"</b></a><td width=\"34%\"><a href=\"memoranda:exportstickersh\"><b>"+Local.getString("Export sticker as .html")+"</b></a></td></tr>"
+		 				+ "<tr><td><a href=\"memoranda:sortnewest\"><b>" + Local.getString("Newest First") + "</td>"
+						+ "<td><a href=\"memoranda:sortoldest\"><b>" + Local.getString("Oldest First") + "</td>"
+						+ "<td><a href=\"memoranda:sortpriority\"><b>" + Local.getString("Highest Priority") + "</td>"
+						+ "</tr>"
+						+ "<tr><td><a href=\"memoranda:sortcolor\"><b>" + Local.getString("Group by color") + "</td></tr>"
+						+ "</table>"
 				 +   "<table border=\"0\" cellpadding=\"0\" width=\"100%\"><tr><td><a href=\"memoranda:addsticker\"><img align=\"left\" width=\"22\" height=\"22\" src=\""				
 				 + iurl
 				+ "\" border=\"0\"  hspace=\"0\" vspace=\"0\" alt=\"New sticker\"></a></td><td width=\"100%\"><a href=\"memoranda:addsticker\"><b>&nbsp;"
@@ -401,7 +411,7 @@ public class AgendaGenerator {
 		if(pri.equals("4"))
 			pri = "Pri: VL";
 		
-        s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><table width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td><a href=\"memoranda:editsticker#"+id+"\">"+Local.getString("EDIT")+"</a></td><td width=\"70%\"><a href=\"memoranda:expandsticker#"+id+"\">"+Local.getString("OPEN IN A NEW WINDOW")+"</></td><td>"+ pri +"</></td><td align=\"right\">" +
+        s += "\n<table border=\"0\" cellpadding=\"0\" width=\"100%\"><table width=\"100%\"><tr bgcolor=\"#E0E0E0\"><td><a href=\"memoranda:editsticker#"+id+"\">"+Local.getString("EDIT")+"</a></td><td width=\"60%\"><a href=\"memoranda:expandsticker#"+id+"\">"+Local.getString("OPEN IN A NEW WINDOW")+"</></td><td>"+ pri +"</></td><td align=\"right\">" +
                 "&nbsp;" + // without this removesticker link takes klicks from whole cell
                   "<a href=\"memoranda:removesticker#"+id+"\"><img align=\"left\" width=\"14\" height=\"14\" src=\""
                 + iurl2
@@ -410,7 +420,7 @@ public class AgendaGenerator {
         s += "<hr>";
 		return s;
 	}
- 
+ /*
     private static PriorityQueue sortStickers(){
         Map stickers = EventsManager.getStickers();
         PriorityQueue pQ = new PriorityQueue(stickers.size());
@@ -422,8 +432,46 @@ public class AgendaGenerator {
         	pQ.insertar(new Pair(el,j));
     	}
     	return pQ;
+    }*/
+    private static PriorityQueue sortStickers(){
+		Map stickers = EventsManager.getStickers();
+    	PriorityQueue pQ = new PriorityQueue(stickers.size());
+    	
+    	//most recent date first
+    	if(stickerSort.equalsIgnoreCase("newestDate")){        	
+        	for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+            	String id = (String)i.next();
+            	Element el = (Element)stickers.get(id);
+            	int sDate = 20160101;
+            	System.out.println(el.getAttribute("startDate"));
+            	sDate = Integer.valueOf(el.getAttributeValue("startDate"));
+            	sDate = (30000000-sDate);
+            	pQ.insertar(new Pair(el,sDate));
+        	}
+        //oldest date first
+    	}else if(stickerSort.equalsIgnoreCase("color")){        	
+        	for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+            	String id = (String)i.next();
+            	Element el = (Element)stickers.get(id);
+            	String color = el.getValue().substring(el.getValue().indexOf("#")+1,el.getValue().indexOf(";"));
+            	//DEBUG System.out.println("color string = " + color);
+            	int colorVal = Integer.parseUnsignedInt(color, 16);//convert the hex into an int
+            	//DEBUG System.out.println("colorVal int = " + Integer.toString(colorVal));
+				pQ.insertar(new Pair(el,colorVal));
+        	}
+    	}
+    	else{ //default sort which is by sticker priority
+    		for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+            	String id = (String)i.next();
+            	Element el = (Element)stickers.get(id);
+            	int j=2;
+            	j=Integer.parseInt(el.getAttributeValue("priority"));
+            	pQ.insertar(new Pair(el,j));
+        	}
+    	}
+    	
+    	return pQ;
     }
-    
 	private static String addExpandHyperLink(String txt, String id) {
 		String ret="";
 		int first=txt.indexOf(">");
@@ -441,6 +489,15 @@ public class AgendaGenerator {
 		 }
 	
 	public static String getAgenda(CalendarDate date, Collection expandedTasks) {
+		String s = HEADER;
+		s += generateAllProjectsInfo(date, expandedTasks);
+		s += generateEventsInfo(date);
+		s += generateStickers(date);
+		//        /*DEBUG*/System.out.println(s+FOOTER);
+		return s + FOOTER;
+	}	
+	public static String getAgenda(CalendarDate date, Collection expandedTasks, String sSort) {
+		stickerSort = sSort;
 		String s = HEADER;
 		s += generateAllProjectsInfo(date, expandedTasks);
 		s += generateEventsInfo(date);
