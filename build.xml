@@ -246,8 +246,7 @@
 		<findbugs home="${lib.dir}"
 			reportLevel="high"
 			output="html"
-		    outputFile="${tests.findbugs.dir}/findbugs.html" 
-			failOnError = "true">
+		    outputFile="${tests.findbugs.dir}/findbugs.html">
 		    <auxClasspath refid="classpath"/>
 		    <sourcePath path="${source.dir}" />
 		    <class location="${build.classes.dir}" />

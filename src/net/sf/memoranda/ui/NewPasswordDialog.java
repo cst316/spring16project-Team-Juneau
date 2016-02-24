@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -35,8 +36,8 @@ public class NewPasswordDialog extends JFrame {
 	  JLabel textLabel1 = new JLabel();
 	  JLabel textLabel2 = new JLabel();
 	  Border border4;
-	  JTextField password1 = new JTextField(10);
-	  JTextField password2 = new JTextField(10);
+	  JPasswordField password1 = new JPasswordField(10);
+	  JPasswordField password2 = new JPasswordField(10);
 	  
 
 	  public NewPasswordDialog() {
