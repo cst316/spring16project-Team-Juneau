@@ -19,6 +19,7 @@ import javax.swing.border.Border;
 import net.sf.memoranda.Login;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Password;
 
 public class LoginDialog extends JFrame {
 	  
@@ -115,7 +116,7 @@ public class LoginDialog extends JFrame {
 	  }
 
 	  void jButton1_actionPerformed(ActionEvent e) {
-	      if(password1.getText().equals(Configuration.get("USER_PASSWORD")))
+	      if(password1.getText().equals(Password.getPassword()))
 	      {
 	    	  Login.cancelled();
 	    	  this.dispose();

@@ -19,6 +19,7 @@ import javax.swing.border.Border;
 import net.sf.memoranda.Login;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Password;
 
 public class NewPasswordDialog extends JFrame {
 	  
@@ -122,18 +123,19 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  }
 
+	  @SuppressWarnings("deprecation")
 	  void jButton1_actionPerformed(ActionEvent e) {
 	      if(password1.getText().equals(password2.getText()))
 	      {
 	    	  if(password1.getText().equals(""))
 		       {
-		       Configuration.put("USER_PASSWORD", "none");
-		       Configuration.saveConfig();
+	    		Password.setPassword(password1.getText());
+		    	Password.save();
 		       }
 	    	  else
 	    	  {
-	    	  Configuration.put("USER_PASSWORD", password1.getText());
-	    	  Configuration.saveConfig();
+	    	  Password.setPassword(password1.getText());
+	    	  Password.save();
 	    	  }
 	    	  Login.cancelled();
 	    	  this.dispose();
