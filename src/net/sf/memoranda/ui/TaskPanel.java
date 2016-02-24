@@ -53,6 +53,7 @@ public class TaskPanel extends JPanel {
     JButton removeTaskB = new JButton();
     JButton completeTaskB = new JButton();
     JButton resetTaskB = new JButton();
+    JButton copyTaskB = new JButton();		//US-10
     
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 		
@@ -64,6 +65,7 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppNewTask = new JMenuItem();
 	JMenuItem ppCompleteTask = new JMenuItem();
 	JMenuItem ppResetTask = new JMenuItem();
+	JMenuItem ppCopyTask = new JMenuItem();
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
 	JMenuItem ppAddSubTask = new JMenuItem();
@@ -194,6 +196,21 @@ public class TaskPanel extends JPanel {
         resetTaskB.setMaximumSize(new Dimension(24, 24));
         resetTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_reset.png")));
+        
+        copyTaskB.setBorderPainted(false);
+        copyTaskB.setFocusable(false);
+        copyTaskB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppResetTask_actionPerformed(e);
+            }
+        });
+        copyTaskB.setPreferredSize(new Dimension(24, 24));
+        copyTaskB.setRequestFocusEnabled(false);
+        copyTaskB.setToolTipText(Local.getString("Reset task"));
+        copyTaskB.setMinimumSize(new Dimension(24, 24));
+        copyTaskB.setMaximumSize(new Dimension(24, 24));
+        copyTaskB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_copy.png")));
         
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
