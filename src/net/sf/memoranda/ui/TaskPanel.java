@@ -544,7 +544,16 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
         long effort = Util.getMillisFromHours(dlg.effortField.getText());
-        int codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+        
+        //Fixes bug where tasks would not be created if LOC was null.
+        int codeLines = 0;
+        if (dlg.codeLinesField.getText() != null) {
+	        try {
+	        	codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+	        } catch (NumberFormatException ex) {
+	        	codeLines = 0;
+	        }
+        }
 
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),null);
