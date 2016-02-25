@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -123,22 +124,23 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  }
 
-	  @SuppressWarnings("deprecation")
+	 
 	  void jButton1_actionPerformed(ActionEvent e) {
-	      if(password1.getText().equals(password2.getText()))
+	      if(Arrays.equals(password1.getPassword(),password2.getPassword()))
 	      {
-	    	  if(password1.getText().equals(""))
-		       {
-	    		Password.setPassword(password1.getText());
-		    	Password.save();
-		       }
+	    	  if(new String(password1.getPassword()).equals(""))
+	    	  {
+	    		  Password.setPassword("none");
+	    		  Password.save();
+	    	  }
 	    	  else
 	    	  {
-	    	  Password.setPassword(password1.getText());
-	    	  Password.save();
+	    		  Password.setPassword(new String(password1.getPassword()));
+	    		  Password.save();
 	    	  }
-	    	  Login.cancelled();
-	    	  this.dispose();
+		     
+	    	Login.cancelled();
+	    	this.dispose();
 	      }
 	      else
 	      {
@@ -148,11 +150,10 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
-	       if(Configuration.get("USER_PASSWORD").equals("default")
-	    		   ||Configuration.get("USER_PASSWORD").equals(""))
+	       if(Password.getPassword().equals(""))
 	       {
-	       Configuration.put("USER_PASSWORD", "none");
-	       Configuration.saveConfig();
+	       Password.setPassword("none");
+	       Password.save();
 	       }
 	       Login.cancelled();
 	  } 

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -116,7 +117,7 @@ public class LoginDialog extends JFrame {
 	  }
 
 	  void jButton1_actionPerformed(ActionEvent e) {
-	      if(password1.getText().equals(Password.getPassword()))
+	      if(Arrays.equals(password1.getPassword(),Password.getPassword().toCharArray()))
 	      {
 	    	  Login.cancelled();
 	    	  this.dispose();
