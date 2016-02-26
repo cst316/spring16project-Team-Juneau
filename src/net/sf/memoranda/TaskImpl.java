@@ -63,8 +63,10 @@ public class TaskImpl implements Task, Comparable {
     }
 
     public void setEndDate(CalendarDate date) {
-		if (date == null)
+		if (date == null){
 			setAttr("endDate", "");
+		}
+		else
 		setAttr("endDate", date.toString());
     }
 
@@ -280,7 +282,7 @@ public class TaskImpl implements Task, Comparable {
      * @see net.sf.memoranda.Task#getProgress()
      */
     public int getProgress() {
-        return new Integer(_element.getAttribute("progress").getValue()).intValue();
+        return Integer.parseInt(_element.getAttribute("progress").getValue());
     }
     /**
      * @see net.sf.memoranda.Task#setProgress(int)
@@ -296,7 +298,7 @@ public class TaskImpl implements Task, Comparable {
         Attribute pa = _element.getAttribute("priority");
         if (pa == null)
             return Task.PRIORITY_NORMAL;
-        return new Integer(pa.getValue()).intValue();
+        return Integer.parseInt(pa.getValue());
     }
     /**
      * @see net.sf.memoranda.Task#setPriority(int)
@@ -366,6 +368,12 @@ public class TaskImpl implements Task, Comparable {
 	 public boolean equals(Object o) {
 	     return ((o instanceof Task) && (((Task)o).getID().equals(this.getID())));
 	 }
+	 
+	 @Override
+	  public int hashCode() {
+	  assert false : "hashCode not designed";
+	  return 42; 
+	  }
 
 	/* 
 	 * @see net.sf.memoranda.Task#getSubTasks()

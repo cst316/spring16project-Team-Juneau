@@ -16,10 +16,13 @@ import java.util.Collections;
 
 import javax.swing.text.html.HTMLDocument;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  *  
  */
 /* $Id: ProjectExporter.java,v 1.7 2005/07/05 08:17:28 alexeya Exp $ */
+@SuppressFBWarnings
 public class ProjectExporter {
 
     static boolean _chunked = false;

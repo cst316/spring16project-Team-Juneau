@@ -23,6 +23,7 @@ package net.sf.memoranda.ui;
 import javax.swing.event.*;
 import javax.swing.tree.TreePath;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.memoranda.*;
 import net.sf.memoranda.date.CurrentDate;
 import net.sf.memoranda.ui.treetable.AbstractTreeTableModel;
@@ -45,7 +46,8 @@ public class TaskTableModel extends AbstractTreeTableModel implements TreeTableM
             Local.getString("Start date"), Local.getString("End date"),
             Local.getString("Priority"), Local.getString("Status"),
             "% " + Local.getString("done") };
-
+    
+    @SuppressFBWarnings
     protected EventListenerList listenerList = new EventListenerList();
 
     private boolean activeOnly = check_activeOnly();

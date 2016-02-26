@@ -444,7 +444,7 @@ public class AgendaGenerator {
             	Element el = (Element)stickers.get(id);
             	int sDate = 20160101;
             	System.out.println(el.getAttribute("startDate"));
-            	sDate = Integer.valueOf(el.getAttributeValue("startDate"));
+            	sDate = Integer.parseInt(el.getAttributeValue("startDate"));
             	sDate = (30000000-sDate);
             	pQ.insertar(new Pair(el,sDate));
         	}

@@ -244,6 +244,7 @@
 	<target name="findbugs" depends="compile" description="Runs findbugs">
 		<mkdir dir="${tests.findbugs.dir}"/>
 		<findbugs home="${lib.dir}"
+			failOnError="true"
 			reportLevel="high"
 			output="html"
 		    outputFile="${tests.findbugs.dir}/findbugs.html" >

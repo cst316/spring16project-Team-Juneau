@@ -135,8 +135,8 @@ public class History {
                  ((HistoryListener) historyListeners.get(i)).historyWasRolledTo(n);
     }
 
-    public static HistoryBackAction historyBackAction = new HistoryBackAction();
-    public static HistoryForwardAction historyForwardAction = new HistoryForwardAction();
+    public final static HistoryBackAction historyBackAction = new HistoryBackAction();
+    public final static HistoryForwardAction historyForwardAction = new HistoryForwardAction();
 
     static class HistoryBackAction extends AbstractAction {
 
