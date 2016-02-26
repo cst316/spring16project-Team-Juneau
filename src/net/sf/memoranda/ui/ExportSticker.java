@@ -6,10 +6,12 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.memoranda.EventsManager;
 import net.sf.memoranda.util.Local;
 import nu.xom.Element;
 
+@SuppressFBWarnings
 public class ExportSticker {
 
         private String name; 
