@@ -146,6 +146,14 @@ public class AppFrame extends JFrame {
 		public void actionPerformed(ActionEvent e){
 			showDiceDialog();
 		}
+    };        
+   
+    public Action showClock = 
+		new AbstractAction(Local.getString("Show clock") + "..."){
+		
+		public void actionPerformed(ActionEvent e){
+			showClockFrame();
+		}
     };
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
@@ -254,6 +262,7 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
     JMenuItem jMenuLetsRoll = new JMenuItem(letsRollAction);
+    JMenuItem jMenuShowClock = new JMenuItem(showClock);
 
     //Construct the frame
     public AppFrame() {
@@ -489,6 +498,7 @@ public class AppFrame extends JFrame {
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.add(jMenuLetsRoll);
+        jMenuHelp.add(jMenuShowClock);
         
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
@@ -868,6 +878,14 @@ public class AppFrame extends JFrame {
     	if(selectedVal.toString().equalsIgnoreCase("0")){
     		showDiceRollDialog();    		
     	}
+    }
+    
+    /**
+     * This method creates a new ClockFrame which will display 
+     * the current date and time.
+     */
+    public void showClockFrame(){
+    	new ClockFrame();
     }
     
     public void showDiceRollDialog(){
