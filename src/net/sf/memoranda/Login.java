@@ -3,6 +3,7 @@ package net.sf.memoranda;
 import net.sf.memoranda.ui.LoginDialog;
 import net.sf.memoranda.ui.NewLoginDialog;
 import net.sf.memoranda.util.Configuration;
+import net.sf.memoranda.util.Password;
 
 public class Login {
 	
@@ -11,13 +12,12 @@ public class Login {
 	static boolean loginOpen = false;
 
 	public static void getDetails(){
-		if(Configuration.get("USER_PASSWORD").toString().equalsIgnoreCase("default")||
-				Configuration.get("USER_PASSWORD")=="")
+		if(Password.getPassword()=="")
 		{
 			loginOpen=true;
 			new NewLoginDialog();
 		}
-		else if(Configuration.get("USER_PASSWORD").toString().equalsIgnoreCase("none"))
+		else if(Password.getPassword().equalsIgnoreCase("none"))
 		{
 			cancelled = true;
 		}

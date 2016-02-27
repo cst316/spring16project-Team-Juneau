@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -18,6 +20,7 @@ import javax.swing.border.Border;
 import net.sf.memoranda.Login;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Password;
 
 public class LoginDialog extends JFrame {
 	  
@@ -33,7 +36,7 @@ public class LoginDialog extends JFrame {
 	  JLabel textLabel = new JLabel();
 	  JLabel textLabel1 = new JLabel();
 	  Border border4;
-	  JTextField password1 = new JTextField(10);
+	  JPasswordField password1 = new JPasswordField(10);
 	  
 
 	  public LoginDialog() {
@@ -114,7 +117,7 @@ public class LoginDialog extends JFrame {
 	  }
 
 	  void jButton1_actionPerformed(ActionEvent e) {
-	      if(password1.getText().equals(Configuration.get("USER_PASSWORD")))
+	      if(Arrays.equals(password1.getPassword(),Password.getPassword().toCharArray()))
 	      {
 	    	  Login.cancelled();
 	    	  this.dispose();
