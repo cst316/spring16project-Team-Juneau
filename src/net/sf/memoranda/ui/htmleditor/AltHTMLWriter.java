@@ -43,6 +43,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.Option;
 import javax.swing.text.html.StyleSheet;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * This is an alternate writer for HTMLDocuments.
  * 
@@ -55,6 +57,7 @@ import javax.swing.text.html.StyleSheet;
  * Copyright 2002 Sun Microsystems, Inc.
  */
 
+@SuppressFBWarnings
 public class AltHTMLWriter extends AbstractWriter {
     /*
      * Stores all elements for which end tags have to
@@ -1071,7 +1074,7 @@ public class AltHTMLWriter extends AbstractWriter {
                     if (weightValue != null) {
                         int fweight;
                         try {
-                            fweight = new Integer(weightValue).intValue();
+                            fweight = Integer.parseInt(weightValue);
                         }
                         catch (Exception ex) {
                             fweight = -1;
