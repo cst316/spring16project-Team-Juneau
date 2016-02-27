@@ -629,7 +629,6 @@ public class TaskPanel extends JPanel {
     		ed = null;
     	t.setStartDate(sd);
     	t.setEndDate(ed);
-    	t.setText(dlg.todoField.getText());
     	t.setDescription(dlg.descriptionField.getText());
     	t.setPriority(dlg.priorityCB.getSelectedIndex());
     	t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
