@@ -376,9 +376,10 @@ public class TaskPanel extends JPanel {
         tasksToolBar.add(removeTaskB, null);
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
+        tasksToolBar.add(copyTaskB, null);
+        tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(completeTaskB, null);
         tasksToolBar.add(resetTaskB, null);
-        tasksToolBar.add(copyTaskB, null);
 
 		//tasksToolBar.add(showActiveOnly, null);
         
@@ -453,7 +454,7 @@ public class TaskPanel extends JPanel {
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
-    
+    taskPPMenu.add(ppCopyTask);
     taskPPMenu.addSeparator();
     taskPPMenu.add(ppNewTask);
     taskPPMenu.add(ppAddSubTask);
@@ -462,7 +463,6 @@ public class TaskPanel extends JPanel {
     taskPPMenu.addSeparator();
 	taskPPMenu.add(ppCompleteTask);
 	taskPPMenu.add(ppResetTask);
-	taskPPMenu.add(ppCopyTask);
 	taskPPMenu.add(ppCalcTask);
 	
     //taskPPMenu.addSeparator();
