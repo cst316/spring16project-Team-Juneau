@@ -522,12 +522,17 @@ public class TaskPanel extends JPanel {
         dlg.priorityCB.setSelectedIndex(t.getPriority());                
         dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
         dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
-	if((t.getStartDate().getDate()).after(t.getEndDate().getDate()))
+	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
 		dlg.chkEndDate.setSelected(false);
-	else
+		dlg.chkEndDate_actionPerformed(null);
+	}
+	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
 		dlg.chkEndDate.setSelected(true);
+		dlg.chkEndDate_actionPerformed(e);
+		
+	}
 		dlg.progress.setValue(new Integer(t.getProgress()));
- 	dlg.chkEndDate_actionPerformed(null);	
+ 	//dlg.chkEndDate_actionPerformed(null);	
         dlg.setVisible(true);
         if (dlg.CANCELLED)
             return;
@@ -612,12 +617,16 @@ public class TaskPanel extends JPanel {
     	dlg.priorityCB.setSelectedIndex(t.getPriority());                
     	dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
     	dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
-    	if((t.getStartDate().getDate()).after(t.getEndDate().getDate()))
+    	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
     		dlg.chkEndDate.setSelected(false);
-    	else
+    		dlg.chkEndDate_actionPerformed(null);
+    	}
+    	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
     		dlg.chkEndDate.setSelected(true);
-    	dlg.progress.setValue(new Integer(t.getProgress()));
-    	dlg.chkEndDate_actionPerformed(null);	
+    		dlg.chkEndDate_actionPerformed(e);
+    		
+    	}
+    	dlg.progress.setValue(new Integer(t.getProgress()));	
     	dlg.setVisible(true);
     	if (dlg.CANCELLED)
     		return;
@@ -627,6 +636,7 @@ public class TaskPanel extends JPanel {
     		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
     	else
     		ed = null;
+    	/*
     	t.setStartDate(sd);
     	t.setEndDate(ed);
     	t.setDescription(dlg.descriptionField.getText());
@@ -634,6 +644,7 @@ public class TaskPanel extends JPanel {
     	t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
     	t.setCodeLines(Integer.parseInt(dlg.codeLinesField.getText()));
     	t.setProgress(((Integer)dlg.progress.getValue()).intValue());
+		*/
 
     	Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),Util.getMillisFromHours(dlg.effortField.getText()), Integer.parseInt(dlg.codeLinesField.getText()), dlg.descriptionField.getText(),null);
     	newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
@@ -674,7 +685,14 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
         long effort = Util.getMillisFromHours(dlg.effortField.getText());
-        int codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+        int codeLines = 0;
+        if (dlg.codeLinesField.getText() != null) {
+	        try {
+	        	codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+	        } catch (NumberFormatException ex) {
+	        	codeLines = 0;
+	        }
+        }
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),parentTaskId);
         newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);

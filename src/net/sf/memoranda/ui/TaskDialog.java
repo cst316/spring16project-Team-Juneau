@@ -404,6 +404,8 @@ public class TaskDialog extends JDialog {
 	public void setEndDate(CalendarDate d) {		
 		if (d != null) 
 			this.endDate.getModel().setValue(d.getDate());
+		else
+			this.endDate.getModel().setValue(null);
 	}
 	
 	public void setStartDateLimit(CalendarDate min, CalendarDate max) {
@@ -433,7 +435,7 @@ public class TaskDialog extends JDialog {
 			Date currentEndDate = (Date) endDate.getModel().getValue();
 			Date currentStartDate = (Date) startDate.getModel().getValue();
 			if(currentEndDate.getTime() < currentStartDate.getTime()) {
-				endDate.getModel().setValue(currentStartDate);
+				endDate.getModel().setValue(null);
 			}
 		}
 	}
