@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 
 import javax.swing.AbstractAction;
@@ -359,7 +360,7 @@ public class EditorPanel extends JPanel {
 	public void initCSS() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				net.sf.memoranda.ui.EditorPanel.class
-						.getResourceAsStream("resources/css/default.css")));
+						.getResourceAsStream("resources/css/default.css"),Charset.defaultCharset()));
 		String css = "";
 		try {
 			String s = br.readLine();
@@ -389,7 +390,7 @@ public class EditorPanel extends JPanel {
 				// DEBUG
 				System.out.println("***[DEBUG] User css used: " + usercss);
 				editor.setStyleSheet(new InputStreamReader(
-						new java.io.FileInputStream(usercss)));
+						new java.io.FileInputStream(usercss),Charset.defaultCharset()));
 			} catch (Exception ex) {
 				System.out.println("***[DEBUG] Failed to open: " + usercss);
 				ex.printStackTrace();

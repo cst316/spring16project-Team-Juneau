@@ -12,8 +12,8 @@ import javax.mail.internet.MimeMessage;
 public class EventEmail {
 
 	static Properties mailServerProperties;
-	static Session getMailSession;
-	static MimeMessage generateMailMessage;
+	private Session getMailSession;
+	private MimeMessage generateMailMessage;
 	
 	private String emailAddress;
 	private String messageBody;
@@ -24,12 +24,16 @@ public class EventEmail {
 		messageBody = eventText;
 	}
 	
-	public boolean sendNewEmail(){
-	
+	static void mailServer(){
 		mailServerProperties = System.getProperties();
 		mailServerProperties.put("mail.smtp.port", "587");
 		mailServerProperties.put("mail.smtp.auth", "true");
 		mailServerProperties.put("mail.smtp.starttls.enable", "true");
+	}
+	
+	public boolean sendNewEmail(){
+	
+		mailServer();
 		
 		
 		getMailSession = Session.getDefaultInstance(mailServerProperties, null);

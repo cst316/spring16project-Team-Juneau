@@ -2,6 +2,9 @@ package net.sf.memoranda.ui;
 
 import java.awt.*;
 import javax.swing.*;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.awt.event.*;
 import java.io.*;
 import net.sf.memoranda.util.*;
@@ -56,10 +59,12 @@ public class ExceptionDialog extends JDialog {
     }
   }
   
+  @SuppressFBWarnings
   public ExceptionDialog(Exception exc) {
       this(exc, "", "");
   }
-
+  
+  @SuppressFBWarnings
   public ExceptionDialog() {
     this(null, "", "");
   }

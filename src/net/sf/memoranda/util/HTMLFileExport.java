@@ -24,10 +24,13 @@ import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.cyberneko.html.parsers.SAXParser;
 import org.xml.sax.InputSource;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 /**
  * 
  */
 /*$Id: HTMLFileExport.java,v 1.7 2005/07/05 08:17:28 alexeya Exp $*/
+@SuppressFBWarnings
 public class HTMLFileExport {
     
     String charset = "";

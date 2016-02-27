@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -11,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -18,6 +20,7 @@ import javax.swing.border.Border;
 import net.sf.memoranda.Login;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Password;
 
 public class NewPasswordDialog extends JFrame {
 	  
@@ -35,8 +38,8 @@ public class NewPasswordDialog extends JFrame {
 	  JLabel textLabel1 = new JLabel();
 	  JLabel textLabel2 = new JLabel();
 	  Border border4;
-	  JTextField password1 = new JTextField(10);
-	  JTextField password2 = new JTextField(10);
+	  JPasswordField password1 = new JPasswordField(10);
+	  JPasswordField password2 = new JPasswordField(10);
 	  
 
 	  public NewPasswordDialog() {
@@ -121,21 +124,23 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  }
 
+	 
 	  void jButton1_actionPerformed(ActionEvent e) {
-	      if(password1.getText().equals(password2.getText()))
+	      if(Arrays.equals(password1.getPassword(),password2.getPassword()))
 	      {
-	    	  if(password1.getText().equals(""))
-		       {
-		       Configuration.put("USER_PASSWORD", "none");
-		       Configuration.saveConfig();
-		       }
+	    	  if(new String(password1.getPassword()).equals(""))
+	    	  {
+	    		  Password.setPassword("none");
+	    		  Password.save();
+	    	  }
 	    	  else
 	    	  {
-	    	  Configuration.put("USER_PASSWORD", password1.getText());
-	    	  Configuration.saveConfig();
+	    		  Password.setPassword(new String(password1.getPassword()));
+	    		  Password.save();
 	    	  }
-	    	  Login.cancelled();
-	    	  this.dispose();
+		     
+	    	Login.cancelled();
+	    	this.dispose();
 	      }
 	      else
 	      {
@@ -145,11 +150,10 @@ public class NewPasswordDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
-	       if(Configuration.get("USER_PASSWORD").equals("default")
-	    		   ||Configuration.get("USER_PASSWORD").equals(""))
+	       if(Password.getPassword().equals(""))
 	       {
-	       Configuration.put("USER_PASSWORD", "none");
-	       Configuration.saveConfig();
+	       Password.setPassword("none");
+	       Password.save();
 	       }
 	       Login.cancelled();
 	  } 

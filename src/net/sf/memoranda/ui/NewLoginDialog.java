@@ -18,6 +18,7 @@ import javax.swing.border.Border;
 import net.sf.memoranda.Login;
 import net.sf.memoranda.util.Configuration;
 import net.sf.memoranda.util.Local;
+import net.sf.memoranda.util.Password;
 
 public class NewLoginDialog extends JFrame {
 	  
@@ -110,8 +111,8 @@ public class NewLoginDialog extends JFrame {
 	  
 	  void jButton2_actionPerformed(ActionEvent e) {
 	       this.dispose();
-	       Configuration.put("USER_PASSWORD", "none");
-	       Configuration.saveConfig();
+	       Password.setPassword("none");
+	       Password.save();
 	       Login.cancelled();
 	  } 
 
