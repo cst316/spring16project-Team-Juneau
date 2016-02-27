@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.regex.Pattern;
 
 import net.sf.memoranda.ui.ExceptionDialog;
@@ -30,7 +31,7 @@ public class HTMLFileImport {
         BufferedReader in;
         try {
             //in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(f),Charset.defaultCharset()));
             String line = in.readLine();
             while (line != null) {
                 text = text + line + "\n";

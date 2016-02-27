@@ -93,6 +93,11 @@ public class Die
         }
         return result;
     }
+    
+    public int hashCode() {
+    	  assert false : "hashCode not designed";
+    	  return 42;
+      }
 
     /**
      * Returns a string with the number of sides and the value of the die.
