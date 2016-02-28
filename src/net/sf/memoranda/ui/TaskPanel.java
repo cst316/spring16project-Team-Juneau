@@ -524,12 +524,12 @@ public class TaskPanel extends JPanel {
         dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
 	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
 		dlg.chkEndDate.setSelected(false);
-		dlg.chkEndDate_actionPerformed(null);
+		dlg.chkEndDate_actionPerformed(e);	
+		//dlg.chkEndDate_actionPerformed(null);
 	}
 	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
 		dlg.chkEndDate.setSelected(true);
-		dlg.chkEndDate_actionPerformed(e);
-		
+		dlg.chkEndDate_actionPerformed(e);	
 	}
 		dlg.progress.setValue(new Integer(t.getProgress()));
  	//dlg.chkEndDate_actionPerformed(null);	
@@ -582,7 +582,6 @@ public class TaskPanel extends JPanel {
  			ed = null;
         long effort = Util.getMillisFromHours(dlg.effortField.getText());
         
-        //Fixes bug where tasks would not be created if LOC was null.
         int codeLines = 0;
         if (dlg.codeLinesField.getText() != null) {
 	        try {
@@ -636,16 +635,7 @@ public class TaskPanel extends JPanel {
     		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
     	else
     		ed = null;
-    	/*
-    	t.setStartDate(sd);
-    	t.setEndDate(ed);
-    	t.setDescription(dlg.descriptionField.getText());
-    	t.setPriority(dlg.priorityCB.getSelectedIndex());
-    	t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
-    	t.setCodeLines(Integer.parseInt(dlg.codeLinesField.getText()));
-    	t.setProgress(((Integer)dlg.progress.getValue()).intValue());
-		*/
-
+ 
     	Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),Util.getMillisFromHours(dlg.effortField.getText()), Integer.parseInt(dlg.codeLinesField.getText()), dlg.descriptionField.getText(),null);
     	newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
     	CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
