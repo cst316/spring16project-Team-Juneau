@@ -53,6 +53,7 @@ public class TaskPanel extends JPanel {
     JButton removeTaskB = new JButton();
     JButton completeTaskB = new JButton();
     JButton resetTaskB = new JButton();
+    JButton copyTaskB = new JButton();
     
 	JCheckBoxMenuItem ppShowActiveOnlyChB = new JCheckBoxMenuItem();
 		
@@ -64,6 +65,7 @@ public class TaskPanel extends JPanel {
 	JMenuItem ppNewTask = new JMenuItem();
 	JMenuItem ppCompleteTask = new JMenuItem();
 	JMenuItem ppResetTask = new JMenuItem();
+	JMenuItem ppCopyTask = new JMenuItem();
 	//JMenuItem ppSubTasks = new JMenuItem();
 	//JMenuItem ppParentTask = new JMenuItem();
 	JMenuItem ppAddSubTask = new JMenuItem();
@@ -194,6 +196,21 @@ public class TaskPanel extends JPanel {
         resetTaskB.setMaximumSize(new Dimension(24, 24));
         resetTaskB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_reset.png")));
+        
+        copyTaskB.setBorderPainted(false);
+        copyTaskB.setFocusable(false);
+        copyTaskB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppCopyTask_actionPerformed(e);
+            }
+        });
+        copyTaskB.setPreferredSize(new Dimension(24, 24));
+        copyTaskB.setRequestFocusEnabled(false);
+        copyTaskB.setToolTipText(Local.getString("Copy task"));
+        copyTaskB.setMinimumSize(new Dimension(24, 24));
+        copyTaskB.setMaximumSize(new Dimension(24, 24));
+        copyTaskB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_copy.png")));
         
 		// added by rawsushi
 //		showActiveOnly.setBorderPainted(false);
@@ -327,6 +344,16 @@ public class TaskPanel extends JPanel {
 		});
 	ppResetTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_reset.png")));
 	ppResetTask.setEnabled(false);
+	
+	ppCopyTask.setFont(new java.awt.Font("Dialog", 1, 11));
+	ppCopyTask.setText(Local.getString("Copy task"));
+	ppCopyTask.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ppCopyTask_actionPerformed(e);
+			}
+		});
+	ppCopyTask.setIcon(new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/todo_copy.png")));
+	ppCopyTask.setEnabled(false);
 
 	ppCalcTask.setFont(new java.awt.Font("Dialog", 1, 11));
 	ppCalcTask.setText(Local.getString("Calculate task data"));
@@ -349,6 +376,8 @@ public class TaskPanel extends JPanel {
         tasksToolBar.add(removeTaskB, null);
         tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(editTaskB, null);
+        tasksToolBar.add(copyTaskB, null);
+        tasksToolBar.addSeparator(new Dimension(8, 24));
         tasksToolBar.add(completeTaskB, null);
         tasksToolBar.add(resetTaskB, null);
 
@@ -387,6 +416,8 @@ public class TaskPanel extends JPanel {
 				completeTaskB.setEnabled(enbl);
 				ppResetTask.setEnabled(enbl);
 				resetTaskB.setEnabled(enbl);
+				ppCopyTask.setEnabled(enbl);
+				copyTaskB.setEnabled(enbl);
 				ppAddSubTask.setEnabled(enbl);
 				//ppSubTasks.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
 				ppCalcTask.setEnabled(enbl); // default value to be over-written later depending on whether it has sub tasks
@@ -418,11 +449,12 @@ public class TaskPanel extends JPanel {
         removeTaskB.setEnabled(false);
 		completeTaskB.setEnabled(false);
 		resetTaskB.setEnabled(false);
+		copyTaskB.setEnabled(false);
 		ppAddSubTask.setEnabled(false);
 		//ppSubTasks.setEnabled(false);
 		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
-    
+    taskPPMenu.add(ppCopyTask);
     taskPPMenu.addSeparator();
     taskPPMenu.add(ppNewTask);
     taskPPMenu.add(ppAddSubTask);
@@ -490,12 +522,17 @@ public class TaskPanel extends JPanel {
         dlg.priorityCB.setSelectedIndex(t.getPriority());                
         dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
         dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
-	if((t.getStartDate().getDate()).after(t.getEndDate().getDate()))
+	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
 		dlg.chkEndDate.setSelected(false);
-	else
+		dlg.chkEndDate_actionPerformed(null);
+	}
+	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
 		dlg.chkEndDate.setSelected(true);
+		dlg.chkEndDate_actionPerformed(e);
+		
+	}
 		dlg.progress.setValue(new Integer(t.getProgress()));
- 	dlg.chkEndDate_actionPerformed(null);	
+ 	//dlg.chkEndDate_actionPerformed(null);	
         dlg.setVisible(true);
         if (dlg.CANCELLED)
             return;
@@ -544,7 +581,16 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
         long effort = Util.getMillisFromHours(dlg.effortField.getText());
-        int codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+        
+        //Fixes bug where tasks would not be created if LOC was null.
+        int codeLines = 0;
+        if (dlg.codeLinesField.getText() != null) {
+	        try {
+	        	codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+	        } catch (NumberFormatException ex) {
+	        	codeLines = 0;
+	        }
+        }
 
 		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),null);
@@ -554,6 +600,57 @@ public class TaskPanel extends JPanel {
         taskTable.tableChanged();
         parentPanel.updateIndicators();
         //taskTable.updateUI();
+    }
+
+    void copyTaskB_actionPerformed(ActionEvent e) {
+    	Task t =
+    			CurrentProject.getTaskList().getTask(
+    					taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+    	TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("Edit task"));
+    	Dimension frmSize = App.getFrame().getSize();
+    	Point loc = App.getFrame().getLocation();
+    	dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+    	dlg.todoField.setText(t.getText());
+    	dlg.descriptionField.setText(t.getDescription());
+    	dlg.startDate.getModel().setValue(t.getStartDate().getDate());
+    	dlg.endDate.getModel().setValue(t.getEndDate().getDate());
+    	dlg.priorityCB.setSelectedIndex(t.getPriority());                
+    	dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
+    	dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
+    	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
+    		dlg.chkEndDate.setSelected(false);
+    		dlg.chkEndDate_actionPerformed(null);
+    	}
+    	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
+    		dlg.chkEndDate.setSelected(true);
+    		dlg.chkEndDate_actionPerformed(e);
+    		
+    	}
+    	dlg.progress.setValue(new Integer(t.getProgress()));	
+    	dlg.setVisible(true);
+    	if (dlg.CANCELLED)
+    		return;
+    	CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+    	CalendarDate ed;
+    	if(dlg.chkEndDate.isSelected())
+    		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+    	else
+    		ed = null;
+    	/*
+    	t.setStartDate(sd);
+    	t.setEndDate(ed);
+    	t.setDescription(dlg.descriptionField.getText());
+    	t.setPriority(dlg.priorityCB.getSelectedIndex());
+    	t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
+    	t.setCodeLines(Integer.parseInt(dlg.codeLinesField.getText()));
+    	t.setProgress(((Integer)dlg.progress.getValue()).intValue());
+		*/
+
+    	Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),Util.getMillisFromHours(dlg.effortField.getText()), Integer.parseInt(dlg.codeLinesField.getText()), dlg.descriptionField.getText(),null);
+    	newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
+    	CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
+    	taskTable.tableChanged();
+    	parentPanel.updateIndicators();	
     }
 
     void addSubTask_actionPerformed(ActionEvent e) {
@@ -588,7 +685,14 @@ public class TaskPanel extends JPanel {
  		else
  			ed = null;
         long effort = Util.getMillisFromHours(dlg.effortField.getText());
-        int codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+        int codeLines = 0;
+        if (dlg.codeLinesField.getText() != null) {
+	        try {
+	        	codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+	        } catch (NumberFormatException ex) {
+	        	codeLines = 0;
+	        }
+        }
 		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),parentTaskId);
         newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
 //		CurrentProject.getTaskList().adjustParentTasks(newTask);
@@ -813,6 +917,10 @@ public class TaskPanel extends JPanel {
 
   void ppCalcTask_actionPerformed(ActionEvent e) {
       calcTask_actionPerformed(e);
+  }
+  
+  void ppCopyTask_actionPerformed(ActionEvent e) {
+	  copyTaskB_actionPerformed(e);
   }
 
 }
