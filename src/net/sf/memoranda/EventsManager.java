@@ -162,7 +162,7 @@ public class EventsManager {
 		el.addAttribute(new Attribute("workingDays",String.valueOf(workDays)));
 		el.addAttribute(new Attribute("emailNotify",String.valueOf(emailNotify)));
 		el.appendChild(text);
-		el.addAttribute(new Attribute("description", disc)); //added this line ---------------- EditJR
+		el.addAttribute(new Attribute("discription", disc)); //added this line ---------------- EditJR
 		rep.appendChild(el);
 		return new EventImpl(el);
 	}
