@@ -451,7 +451,8 @@ public class TaskPanel extends JPanel {
 		resetTaskB.setEnabled(false);
 		copyTaskB.setEnabled(false);
 		ppAddSubTask.setEnabled(false);
-
+		//ppSubTasks.setEnabled(false);
+		//ppParentTask.setEnabled(false);
     taskPPMenu.add(ppEditTask);
     taskPPMenu.add(ppCopyTask);
     taskPPMenu.addSeparator();
@@ -463,6 +464,13 @@ public class TaskPanel extends JPanel {
 	taskPPMenu.add(ppCompleteTask);
 	taskPPMenu.add(ppResetTask);
 	taskPPMenu.add(ppCalcTask);
+	
+    //taskPPMenu.addSeparator();
+    
+    //taskPPMenu.add(ppSubTasks);
+    
+    //taskPPMenu.addSeparator();
+    //taskPPMenu.add(ppParentTask);
     
     taskPPMenu.addSeparator();
 	taskPPMenu.add(ppShowActiveOnlyChB);
@@ -500,84 +508,97 @@ public class TaskPanel extends JPanel {
     }
 
     void editTaskB_actionPerformed(ActionEvent e) {
-    	Task t =
-    			CurrentProject.getTaskList().getTask(
-    					taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
-    	TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("Edit task"));
-    	Dimension frmSize = App.getFrame().getSize();
-    	Point loc = App.getFrame().getLocation();
-    	dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
-    	dlg.todoField.setText(t.getText());
-    	dlg.descriptionField.setText(t.getDescription());
-    	dlg.startDate.getModel().setValue(t.getStartDate().getDate());
-    	dlg.endDate.getModel().setValue(t.getEndDate().getDate());
-    	dlg.priorityCB.setSelectedIndex(t.getPriority());                
-    	dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
-    	dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
-    	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
-    		dlg.chkEndDate.setSelected(false);
-    		dlg.chkEndDate_actionPerformed(e);	
-    	}
-    	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
-    		dlg.chkEndDate.setSelected(true);
-    		dlg.chkEndDate_actionPerformed(e);	
-    	}
-    	dlg.progress.setValue(new Integer(t.getProgress()));
-    	dlg.setVisible(true);
-    	if (dlg.CANCELLED)
-    		return;
-    	CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-    	CalendarDate ed;
-    	if(dlg.chkEndDate.isSelected())
-    		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-    	else
-    		ed = null;
-    	t.setStartDate(sd);
-    	t.setEndDate(ed);
-    	t.setText(dlg.todoField.getText());
-    	t.setDescription(dlg.descriptionField.getText());
-    	t.setPriority(dlg.priorityCB.getSelectedIndex());
-    	t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
-    	t.setCodeLines(Integer.parseInt(dlg.codeLinesField.getText()));
-    	t.setProgress(((Integer)dlg.progress.getValue()).intValue());
+        Task t =
+            CurrentProject.getTaskList().getTask(
+                taskTable.getModel().getValueAt(taskTable.getSelectedRow(), TaskTable.TASK_ID).toString());
+        TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("Edit task"));
+        Dimension frmSize = App.getFrame().getSize();
+        Point loc = App.getFrame().getLocation();
+        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+        dlg.todoField.setText(t.getText());
+        dlg.descriptionField.setText(t.getDescription());
+        dlg.startDate.getModel().setValue(t.getStartDate().getDate());
+        dlg.endDate.getModel().setValue(t.getEndDate().getDate());
+        dlg.priorityCB.setSelectedIndex(t.getPriority());                
+        dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
+        dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
+	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
+		dlg.chkEndDate.setSelected(false);
+		dlg.chkEndDate_actionPerformed(e);	
+		//dlg.chkEndDate_actionPerformed(null);
+	}
+	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
+		dlg.chkEndDate.setSelected(true);
+		dlg.chkEndDate_actionPerformed(e);	
+	}
+		dlg.progress.setValue(new Integer(t.getProgress()));
+ 	//dlg.chkEndDate_actionPerformed(null);	
+        dlg.setVisible(true);
+        if (dlg.CANCELLED)
+            return;
+        CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+//        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+         CalendarDate ed;
+ 		if(dlg.chkEndDate.isSelected())
+ 			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+ 		else
+ 			ed = null;
+        t.setStartDate(sd);
+        t.setEndDate(ed);
+        t.setText(dlg.todoField.getText());
+        t.setDescription(dlg.descriptionField.getText());
+        t.setPriority(dlg.priorityCB.getSelectedIndex());
+        t.setEffort(Util.getMillisFromHours(dlg.effortField.getText()));
+        t.setCodeLines(Integer.parseInt(dlg.codeLinesField.getText()));
+        t.setProgress(((Integer)dlg.progress.getValue()).intValue());
+        
+//		CurrentProject.getTaskList().adjustParentTasks(t);
 
-    	CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
-    	taskTable.tableChanged();
-    	parentPanel.updateIndicators();
+        CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
+        taskTable.tableChanged();
+        parentPanel.updateIndicators();
+        //taskTable.updateUI();
     }
 
     void newTaskB_actionPerformed(ActionEvent e) {
-    	TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New task"));
-    	Dimension frmSize = App.getFrame().getSize();
-    	Point loc = App.getFrame().getLocation();
-    	dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
-    	dlg.endDate.getModel().setValue(CurrentDate.get().getDate());
-    	dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
-    	dlg.setVisible(true);
-    	if (dlg.CANCELLED)
-    		return;
-    	CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
-    	CalendarDate ed;
-    	if(dlg.chkEndDate.isSelected())
-    		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
-    	else
-    		ed = null;
-    	long effort = Util.getMillisFromHours(dlg.effortField.getText());
+        TaskDialog dlg = new TaskDialog(App.getFrame(), Local.getString("New task"));
+        
+        //XXX String parentTaskId = taskTable.getCurrentRootTask();
+        
+        Dimension frmSize = App.getFrame().getSize();
+        Point loc = App.getFrame().getLocation();
+        dlg.startDate.getModel().setValue(CurrentDate.get().getDate());
+        dlg.endDate.getModel().setValue(CurrentDate.get().getDate());
+        dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+        dlg.setVisible(true);
+        if (dlg.CANCELLED)
+            return;
+        CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
+//        CalendarDate ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+          CalendarDate ed;
+ 		if(dlg.chkEndDate.isSelected())
+ 			ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
+ 		else
+ 			ed = null;
+        long effort = Util.getMillisFromHours(dlg.effortField.getText());
+        
+        int codeLines = 0;
+        if (dlg.codeLinesField.getText() != null) {
+	        try {
+	        	codeLines = Integer.parseInt(dlg.codeLinesField.getText());
+	        } catch (NumberFormatException ex) {
+	        	codeLines = 0;
+	        }
+        }
 
-    	int codeLines = 0;
-    	if (dlg.codeLinesField.getText() != null) {
-    		try {
-    			codeLines = Integer.parseInt(dlg.codeLinesField.getText());
-    		} catch (NumberFormatException ex) {
-    			codeLines = 0;
-    		}
-    	}
-
-    	Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),null);
-    	newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
-    	CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
-    	taskTable.tableChanged();
-    	parentPanel.updateIndicators();
+		//XXX Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, dlg.descriptionField.getText(),parentTaskId);
+		Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),effort, codeLines, dlg.descriptionField.getText(),null);
+//		CurrentProject.getTaskList().adjustParentTasks(newTask);
+		newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
+        CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
+        taskTable.tableChanged();
+        parentPanel.updateIndicators();
+        //taskTable.updateUI();
     }
 
     void copyTaskB_actionPerformed(ActionEvent e) {
@@ -595,7 +616,6 @@ public class TaskPanel extends JPanel {
     	dlg.priorityCB.setSelectedIndex(t.getPriority());                
     	dlg.effortField.setText(Util.getHoursFromMillis(t.getEffort()));
     	dlg.codeLinesField.setText(String.valueOf(t.getCodeLines()));
-    	
     	if((t.getStartDate().getDate()).after(t.getEndDate().getDate())) {
     		dlg.chkEndDate.setSelected(false);
     		dlg.chkEndDate_actionPerformed(null);
@@ -603,21 +623,19 @@ public class TaskPanel extends JPanel {
     	else if ((t.getEndDate().getDate()).after(t.getStartDate().getDate())) {
     		dlg.chkEndDate.setSelected(true);
     		dlg.chkEndDate_actionPerformed(e);
-
+    		
     	}
-    	
     	dlg.progress.setValue(new Integer(t.getProgress()));	
     	dlg.setVisible(true);
     	if (dlg.CANCELLED)
     		return;
     	CalendarDate sd = new CalendarDate((Date) dlg.startDate.getModel().getValue());
     	CalendarDate ed;
-    	
     	if(dlg.chkEndDate.isSelected())
     		ed = new CalendarDate((Date) dlg.endDate.getModel().getValue());
     	else
     		ed = null;
-
+ 
     	Task newTask = CurrentProject.getTaskList().createTask(sd, ed, dlg.todoField.getText(), dlg.priorityCB.getSelectedIndex(),Util.getMillisFromHours(dlg.effortField.getText()), Integer.parseInt(dlg.codeLinesField.getText()), dlg.descriptionField.getText(),null);
     	newTask.setProgress(((Integer)dlg.progress.getValue()).intValue());
     	CurrentStorage.get().storeTaskList(CurrentProject.getTaskList(), CurrentProject.get());
