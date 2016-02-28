@@ -435,7 +435,7 @@ public class TaskDialog extends JDialog {
 			Date currentEndDate = (Date) endDate.getModel().getValue();
 			Date currentStartDate = (Date) startDate.getModel().getValue();
 			if(currentEndDate.getTime() < currentStartDate.getTime()) {
-				endDate.getModel().setValue(null);
+				endDate.getModel().setValue(currentStartDate);
 			}
 		}
 	}
