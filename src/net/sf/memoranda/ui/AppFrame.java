@@ -864,7 +864,6 @@ public class AppFrame extends JFrame {
         JDialog dialog = dlg.createDialog(null, "Let's Roll");
         dialog.show();
     	Object selectedVal = dlg.getValue();
-    	//System.out.println("[DEBUG] selectedVal for showDiceIntro = "+selectedVal.toString());
     	if(selectedVal.toString().equalsIgnoreCase("0")){
     		showDiceRollDialog();    		
     	}
@@ -873,12 +872,10 @@ public class AppFrame extends JFrame {
     public void showDiceRollDialog(){
     	Die droll = new Die();
     	int dieVal = droll.roll();
-    	//JOptionPane.showConfirmDialog(null, "Your result was " + dieVal + " Press OK to roll again.", "Die Roll", JOptionPane.OK_CANCEL_OPTION);
     	JOptionPane dlg = new JOptionPane("Your result was (" + dieVal + ")\nPress OK to roll again.", JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         JDialog dialog = dlg.createDialog(null, "Let's Roll");
         dialog.show();
     	Object selectedVal = dlg.getValue();
-    	//System.out.println("[DEBUG] selectedVal = "+selectedVal.toString() + " Roll = " + dieVal);
     	if(selectedVal.toString().equalsIgnoreCase("0")){
     		showDiceRollDialog();    		
     	}
