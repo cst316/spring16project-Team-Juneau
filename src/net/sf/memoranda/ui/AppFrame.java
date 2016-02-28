@@ -2,6 +2,7 @@ package net.sf.memoranda.ui;
 
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
@@ -34,6 +35,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.html.HTMLDocument;
 
 import net.sf.memoranda.CurrentProject;
@@ -146,6 +148,22 @@ public class AppFrame extends JFrame {
 		public void actionPerformed(ActionEvent e){
 			showDiceDialog();
 		}
+    };        
+   
+    public Action showClock = 
+		new AbstractAction(Local.getString("Show clock") + "..."){
+		
+		public void actionPerformed(ActionEvent e){
+			showClockFrame();
+		}
+    };
+    
+    public Action showCalc = 
+		new AbstractAction(Local.getString("Show calculator") + "..."){
+		
+		public void actionPerformed(ActionEvent e){
+			showCalculator();
+		}
     };
     
     JMenuItem jMenuFileNewPrj = new JMenuItem();
@@ -254,8 +272,13 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
     JMenuItem jMenuLetsRoll = new JMenuItem(letsRollAction);
+    JMenuItem jMenuShowClock = new JMenuItem(showClock);
+    JMenuItem jMenuMiniCalc = new JMenuItem(showCalc);
 
-    //Construct the frame
+
+    /*
+     * Construct the frame
+     */
     public AppFrame() {
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         try {
@@ -489,6 +512,9 @@ public class AppFrame extends JFrame {
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.add(jMenuLetsRoll);
+        jMenuHelp.add(jMenuShowClock);
+        jMenuHelp.add(jMenuMiniCalc);
+
         
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
@@ -859,26 +885,50 @@ public class AppFrame extends JFrame {
         dlg.setVisible(true);
     }
     
+    public void showCalculator(){
+               CalculatorFrame frame = new CalculatorFrame();
+               frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+               frame.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/jnotes16.png")).getImage());
+               frame.getContentPane().setBackground(new ColorUIResource(251, 197, 63));
+               frame.setVisible(true);
+    }
+    
     public void showDiceDialog(){
+    	
+    	UIManager UI = new UIManager();
+    	UI.put("OptionPane.background",new ColorUIResource(251, 197, 63));
+    	UI.put("Panel.background", new ColorUIResource(251, 197, 63));
+    	
     	JOptionPane dlg = new JOptionPane("Lets Roll!!", JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+    	dlg.setBackground(new Color(251, 197, 63));
         JDialog dialog = dlg.createDialog(null, "Let's Roll");
-        dialog.show();
+        dialog.setVisible(true);
     	Object selectedVal = dlg.getValue();
-    	//System.out.println("[DEBUG] selectedVal for showDiceIntro = "+selectedVal.toString());
     	if(selectedVal.toString().equalsIgnoreCase("0")){
     		showDiceRollDialog();    		
     	}
     }
     
+    /**
+     * This method creates a new ClockFrame which will display 
+     * the current date and time.
+     */
+    public void showClockFrame(){
+    	new ClockFrame();
+    }
+    
     public void showDiceRollDialog(){
+    	
+    	UIManager UI = new UIManager();
+    	UI.put("OptionPane.background",new ColorUIResource(251, 197, 63));
+    	UI.put("Panel.background", new ColorUIResource(251, 197, 63));
+    	
     	Die droll = new Die();
     	int dieVal = droll.roll();
-    	//JOptionPane.showConfirmDialog(null, "Your result was " + dieVal + " Press OK to roll again.", "Die Roll", JOptionPane.OK_CANCEL_OPTION);
     	JOptionPane dlg = new JOptionPane("Your result was (" + dieVal + ")\nPress OK to roll again.", JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
         JDialog dialog = dlg.createDialog(null, "Let's Roll");
-        dialog.show();
+        dialog.setVisible(true);
     	Object selectedVal = dlg.getValue();
-    	//System.out.println("[DEBUG] selectedVal = "+selectedVal.toString() + " Roll = " + dieVal);
     	if(selectedVal.toString().equalsIgnoreCase("0")){
     		showDiceRollDialog();    		
     	}
