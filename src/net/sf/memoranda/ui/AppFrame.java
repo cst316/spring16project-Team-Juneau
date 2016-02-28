@@ -158,6 +158,14 @@ public class AppFrame extends JFrame {
 		}
     };
     
+    public Action showCalc = 
+		new AbstractAction(Local.getString("Show calculator") + "..."){
+		
+		public void actionPerformed(ActionEvent e){
+			showCalculator();
+		}
+    };
+    
     JMenuItem jMenuFileNewPrj = new JMenuItem();
         JMenuItem jMenuFileNewNote = new JMenuItem(workPanel.dailyItemsPanel.editorPanel.newAction);
     JMenuItem jMenuFilePackPrj = new JMenuItem(prjPackAction);
@@ -264,9 +272,15 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
     JMenuItem jMenuLetsRoll = new JMenuItem(letsRollAction);
+<<<<<<< HEAD
     JMenuItem jMenuShowClock = new JMenuItem(showClock);
+=======
+    JMenuItem jMenuMiniCalc = new JMenuItem(showCalc);
+>>>>>>> US-80Correction
 
-    //Construct the frame
+    /*
+     * Construct the frame
+     */
     public AppFrame() {
         enableEvents(AWTEvent.WINDOW_EVENT_MASK);
         try {
@@ -500,7 +514,11 @@ public class AppFrame extends JFrame {
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.add(jMenuLetsRoll);
+<<<<<<< HEAD
         jMenuHelp.add(jMenuShowClock);
+=======
+        jMenuHelp.add(jMenuMiniCalc);
+>>>>>>> US-80Correction
         
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
@@ -869,6 +887,14 @@ public class AppFrame extends JFrame {
         dlg.pack();
         dlg.setLocationRelativeTo(this);
         dlg.setVisible(true);
+    }
+    
+    public void showCalculator(){
+               CalculatorFrame frame = new CalculatorFrame();
+               frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+               frame.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/jnotes16.png")).getImage());
+               frame.getContentPane().setBackground(new ColorUIResource(251, 197, 63));
+               frame.setVisible(true);
     }
     
     public void showDiceDialog(){
