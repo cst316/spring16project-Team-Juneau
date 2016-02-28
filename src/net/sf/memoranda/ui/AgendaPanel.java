@@ -122,7 +122,7 @@ public class AgendaPanel extends JPanel {
 							String txt = dlg.getStickerText();
 							int sP = dlg.getPriority();
 							Date date = new Date();
-							DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+							DateFormat dateFormat = new SimpleDateFormat("yyDkmm");
 							String sDate = (dateFormat.format(date));
 							txt = txt.replaceAll("\\n", "<br>");
                             txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+"; \">"+txt+"</div>";
@@ -130,7 +130,7 @@ public class AgendaPanel extends JPanel {
 							CurrentStorage.get().storeEventsManager();
 						}
 						refresh(CurrentDate.get());
-						System.out.println("agregué un sticker");
+						System.out.println("Added a sticker");
 					}else if (d.startsWith("memoranda:sortnewest")) {
 						//sort stickers by newest first
 						String sort = "newestDate";
@@ -254,11 +254,11 @@ public class AgendaPanel extends JPanel {
 							sP = dlg.getPriority();
 							txt = txt.replaceAll("\\n", "<br>");
 							txt = "<div style=\"background-color:"+dlg.getStickerColor()+";font-size:"+dlg.getStickerTextSize()+";color:"+dlg.getStickerTextColor()+";\">"+txt+"</div>";
-							//DEBUG System.out.println("dlg.getStickerText() = " + txt);
 							EventsManager.removeSticker(id);
+							
 							//when a sticker is edited the date it was "started" is updated to reflect the last time it was modified.
 							Date date = new Date();
-							DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+							DateFormat dateFormat = new SimpleDateFormat("yyDkmm");
 							String sDate = (dateFormat.format(date));
 							
 							EventsManager.createSticker(txt, sP, sDate);
@@ -347,24 +347,7 @@ public class AgendaPanel extends JPanel {
 			}
 		});
 		refresh(CurrentDate.get());
-
-		//        agendaPPMenu.setFont(new java.awt.Font("Dialog", 1, 10));
-		//        agendaPPMenu.add(ppShowActiveOnlyChB);
-		//        PopupListener ppListener = new PopupListener();
-		//        viewer.addMouseListener(ppListener);
-		//		ppShowActiveOnlyChB.setFont(new java.awt.Font("Dialog", 1, 11));
-		//		ppShowActiveOnlyChB.setText(
-		//			Local.getString("Show Active only"));
-		//		ppShowActiveOnlyChB.addActionListener(new java.awt.event.ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				toggleShowActiveOnly_actionPerformed(e);
-		//			}
-		//		});		
-		//		boolean isShao =
-		//			(Context.get("SHOW_ACTIVE_TASKS_ONLY") != null)
-		//				&& (Context.get("SHOW_ACTIVE_TASKS_ONLY").equals("true"));
-		//		ppShowActiveOnlyChB.setSelected(isShao);
-		//		toggleShowActiveOnly_actionPerformed(null);		
+	
 	}
 
 	public void refresh(CalendarDate date) {
@@ -386,48 +369,4 @@ public class AgendaPanel extends JPanel {
 		isActive = isa;
 	}
 
-	//	void toggleShowActiveOnly_actionPerformed(ActionEvent e) {
-	//		Context.put(
-	//			"SHOW_ACTIVE_TASKS_ONLY",
-	//			new Boolean(ppShowActiveOnlyChB.isSelected()));
-	//		/*if (taskTable.isShowActiveOnly()) {
-	//			// is true, toggle to false
-	//			taskTable.setShowActiveOnly(false);
-	//			//showActiveOnly.setToolTipText(Local.getString("Show Active Only"));			
-	//		}
-	//		else {
-	//			// is false, toggle to true
-	//			taskTable.setShowActiveOnly(true);
-	//			showActiveOnly.setToolTipText(Local.getString("Show All"));			
-	//		}*/	    
-	//		refresh(CurrentDate.get());
-	////		parentPanel.updateIndicators();
-	//		//taskTable.updateUI();
-	//	}
-
-	//    class PopupListener extends MouseAdapter {
-	//
-	//        public void mouseClicked(MouseEvent e) {
-	//        	System.out.println("mouse clicked!");
-	////			if ((e.getClickCount() == 2) && (taskTable.getSelectedRow() > -1))
-	////				editTaskB_actionPerformed(null);
-	//		}
-	//
-	//		public void mousePressed(MouseEvent e) {
-	//        	System.out.println("mouse pressed!");
-	//			maybeShowPopup(e);
-	//		}
-	//
-	//		public void mouseReleased(MouseEvent e) {
-	//        	System.out.println("mouse released!");
-	//			maybeShowPopup(e);
-	//		}
-	//
-	//		private void maybeShowPopup(MouseEvent e) {
-	//			if (e.isPopupTrigger()) {
-	//				agendaPPMenu.show(e.getComponent(), e.getX(), e.getY());
-	//			}
-	//		}
-	//
-	//    }
 }
