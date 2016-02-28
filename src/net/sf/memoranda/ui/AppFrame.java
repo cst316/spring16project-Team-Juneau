@@ -272,11 +272,9 @@ public class AppFrame extends JFrame {
     JMenuItem jMenuHelpBug = new JMenuItem();
     JMenuItem jMenuHelpAbout = new JMenuItem();
     JMenuItem jMenuLetsRoll = new JMenuItem(letsRollAction);
-<<<<<<< HEAD
     JMenuItem jMenuShowClock = new JMenuItem(showClock);
-=======
     JMenuItem jMenuMiniCalc = new JMenuItem(showCalc);
->>>>>>> US-80Correction
+
 
     /*
      * Construct the frame
@@ -514,11 +512,9 @@ public class AppFrame extends JFrame {
         jMenuHelp.addSeparator();
         jMenuHelp.add(jMenuHelpAbout);
         jMenuHelp.add(jMenuLetsRoll);
-<<<<<<< HEAD
         jMenuHelp.add(jMenuShowClock);
-=======
         jMenuHelp.add(jMenuMiniCalc);
->>>>>>> US-80Correction
+
         
         menuBar.add(jMenuFile);
         menuBar.add(jMenuEdit);
