@@ -443,24 +443,31 @@ public class AgendaGenerator {
             	String id = (String)i.next();
             	Element el = (Element)stickers.get(id);
             	int sDate = 20160101;
-            	System.out.println(el.getAttribute("startDate"));
             	sDate = Integer.parseInt(el.getAttributeValue("startDate"));
             	sDate = (30000000-sDate);
             	pQ.insertar(new Pair(el,sDate));
         	}
         //oldest date first
+    	}else if(stickerSort.equalsIgnoreCase("oldestDate")){        	
+            	for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
+                	String id = (String)i.next();
+                	Element el = (Element)stickers.get(id);
+                	int sDate = 20160101;
+                	sDate = Integer.parseInt(el.getAttributeValue("startDate"));
+                	pQ.insertar(new Pair(el,sDate));
+            	}
     	}else if(stickerSort.equalsIgnoreCase("color")){        	
         	for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
             	String id = (String)i.next();
             	Element el = (Element)stickers.get(id);
             	String color = el.getValue().substring(el.getValue().indexOf("#")+1,el.getValue().indexOf(";"));
-            	//DEBUG System.out.println("color string = " + color);
-            	int colorVal = Integer.parseUnsignedInt(color, 16);//convert the hex into an int
-            	//DEBUG System.out.println("colorVal int = " + Integer.toString(colorVal));
+            	//convert the hex into an int
+            	int colorVal = Integer.parseUnsignedInt(color, 16);
 				pQ.insertar(new Pair(el,colorVal));
         	}
     	}
-    	else{ //default sort which is by sticker priority
+    	//default sort which is by sticker priority
+    	else{ 
     		for (Iterator i = stickers.keySet().iterator(); i.hasNext();) {
             	String id = (String)i.next();
             	Element el = (Element)stickers.get(id);
@@ -493,7 +500,6 @@ public class AgendaGenerator {
 		s += generateAllProjectsInfo(date, expandedTasks);
 		s += generateEventsInfo(date);
 		s += generateStickers(date);
-		//        /*DEBUG*/System.out.println(s+FOOTER);
 		return s + FOOTER;
 	}	
 	public static String getAgenda(CalendarDate date, Collection expandedTasks, String sSort) {
@@ -502,7 +508,6 @@ public class AgendaGenerator {
 		s += generateAllProjectsInfo(date, expandedTasks);
 		s += generateEventsInfo(date);
 		s += generateStickers(date);
-		//        /*DEBUG*/System.out.println(s+FOOTER);
 		return s + FOOTER;
 	}
 	/*    
