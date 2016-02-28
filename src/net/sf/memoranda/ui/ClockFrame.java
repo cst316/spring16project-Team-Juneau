@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * A class to build a frame and populate it with the
@@ -26,7 +27,9 @@ public class ClockFrame {
 		clockFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		clockFrame.getContentPane().setLayout(null);
 		clockFrame.setSize(650, 110);
+		clockFrame.setIconImage(new ImageIcon(EventNotificationDialog.class.getResource("resources/icons/jnotes16.png")).getImage());
 		
+		clockFrame.getContentPane().setBackground(new ColorUIResource(251, 197, 63));
 		lblClock.setFont(new Font("Georgia", Font.BOLD, 24));
 		lblClock.setText("SOME TEXT FOR MY CLOCK");
 		lblClock.setBounds(10, 5, 630, 80);
@@ -46,6 +49,7 @@ public class ClockFrame {
 		Thread clockTread = new Thread(){
 			public void run(){
 				try {
+					
 					while(true){
 
 						Calendar calendar = new GregorianCalendar();
