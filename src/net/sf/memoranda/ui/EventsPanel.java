@@ -43,11 +43,13 @@ public class EventsPanel extends JPanel {
     JButton historyForwardB = new JButton();
     JButton newEventB = new JButton();
     JButton editEventB = new JButton();
+    JButton copyEventB = new JButton();
     JButton removeEventB = new JButton();
     JScrollPane scrollPane = new JScrollPane();
     EventsTable eventsTable = new EventsTable();
     JPopupMenu eventPPMenu = new JPopupMenu();
     JMenuItem ppEditEvent = new JMenuItem();
+    JMenuItem ppCopyEvent = new JMenuItem();
     JMenuItem ppRemoveEvent = new JMenuItem();
     JMenuItem ppNewEvent = new JMenuItem();
     DailyItemsPanel parentPanel = null;
@@ -116,6 +118,22 @@ public class EventsPanel extends JPanel {
         editEventB.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_edit.png")));
 
+        copyEventB.setBorderPainted(false);
+        copyEventB.setFocusable(false);
+        copyEventB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                copyEventB_actionPerformed(e);
+            }
+        });
+        copyEventB.setPreferredSize(new Dimension(24, 24));
+        copyEventB.setRequestFocusEnabled(false);
+        copyEventB.setToolTipText(Local.getString("Copy event"));
+        copyEventB.setMinimumSize(new Dimension(24, 24));
+        copyEventB.setMaximumSize(new Dimension(24, 24));
+        copyEventB.setEnabled(true);
+        copyEventB.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_copy.png")));
+        
         removeEventB.setBorderPainted(false);
         removeEventB.setFocusable(false);
         removeEventB.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +164,18 @@ public class EventsPanel extends JPanel {
         ppEditEvent.setEnabled(false);
         ppEditEvent.setIcon(
             new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_edit.png")));
+        
+        ppCopyEvent.setFont(new java.awt.Font("Dialog", 1, 11));
+        ppCopyEvent.setText(Local.getString("Copy event") + "...");
+        ppCopyEvent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ppCopyEvent_actionPerformed(e);
+            }
+        });
+        ppCopyEvent.setEnabled(false);
+        ppCopyEvent.setIcon(
+            new ImageIcon(net.sf.memoranda.ui.AppFrame.class.getResource("resources/icons/event_copy.png")));
+        
         ppRemoveEvent.setFont(new java.awt.Font("Dialog", 1, 11));
         ppRemoveEvent.setText(Local.getString("Remove event"));
         ppRemoveEvent.addActionListener(new java.awt.event.ActionListener() {
@@ -175,6 +205,8 @@ public class EventsPanel extends JPanel {
         eventsToolBar.add(removeEventB, null);
         eventsToolBar.addSeparator(new Dimension(8, 24));
         eventsToolBar.add(editEventB, null);
+        eventsToolBar.add(copyEventB, null);
+
 
         this.add(eventsToolBar, BorderLayout.NORTH);
 
@@ -190,6 +222,8 @@ public class EventsPanel extends JPanel {
                 ppNewEvent.setEnabled(enbl);
                 editEventB.setEnabled(false);
                 ppEditEvent.setEnabled(false);
+                copyEventB.setEnabled(false);
+                ppCopyEvent.setEnabled(false);
                 removeEventB.setEnabled(false);
                 ppRemoveEvent.setEnabled(false);
             }
@@ -200,13 +234,17 @@ public class EventsPanel extends JPanel {
                 boolean enbl = eventsTable.getSelectedRow() > -1;
                 editEventB.setEnabled(enbl);
                 ppEditEvent.setEnabled(enbl);
+                copyEventB.setEnabled(enbl);
+                ppCopyEvent.setEnabled(enbl);
                 removeEventB.setEnabled(enbl);
                 ppRemoveEvent.setEnabled(enbl);
             }
         });
         editEventB.setEnabled(false);
+        copyEventB.setEnabled(false);
         removeEventB.setEnabled(false);
         eventPPMenu.add(ppEditEvent);
+        eventPPMenu.add(ppCopyEvent);
         eventPPMenu.addSeparator();
         eventPPMenu.add(ppNewEvent);
         eventPPMenu.add(ppRemoveEvent);
@@ -224,7 +262,7 @@ public class EventsPanel extends JPanel {
     }
 
     void editEventB_actionPerformed(ActionEvent e) {
-        EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("Event"));
+        EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("Edit event"));
         net.sf.memoranda.Event ev =
             (net.sf.memoranda.Event) eventsTable.getModel().getValueAt(
                 eventsTable.getSelectedRow(),
@@ -314,6 +352,80 @@ public class EventsPanel extends JPanel {
 	saveEvents();
     }
 
+    void copyEventB_actionPerformed(ActionEvent e) {
+    	EventDialog dlg = new EventDialog(App.getFrame(), Local.getString("Copy event"));
+    	net.sf.memoranda.Event ev =
+    			(net.sf.memoranda.Event) eventsTable.getModel().getValueAt(
+    					eventsTable.getSelectedRow(),
+    					EventsTable.EVENT);
+
+    	dlg.timeSpin.getModel().setValue(ev.getTime()); 
+    	dlg.textField.setText(ev.getText());
+    	dlg.discField.setText(ev.getDisc());
+
+    	if(ev.getEmailNotify()) {
+    		dlg.emailNotifyCB.setSelected(true);
+    	}
+
+    	int rep = ev.getRepeat();
+    	if (rep > 0) {
+    		dlg.startDate.getModel().setValue(ev.getStartDate().getDate());
+    		if (rep == EventsManager.REPEAT_DAILY) {
+    			dlg.dailyRepeatRB.setSelected(true);
+    			dlg.dailyRepeatRB_actionPerformed(null);
+    			dlg.daySpin.setValue(new Integer(ev.getPeriod()));
+    		}
+    		else if (rep == EventsManager.REPEAT_WEEKLY) {
+    			dlg.weeklyRepeatRB.setSelected(true);
+    			dlg.weeklyRepeatRB_actionPerformed(null);
+    			int d = ev.getPeriod() - 1;
+    			if(Configuration.get("FIRST_DAY_OF_WEEK").equals("mon")) {
+    				d--;
+    				if(d<0) d=6;
+    			}
+    			dlg.weekdaysCB.setSelectedIndex(d);
+    		}
+    		else if (rep == EventsManager.REPEAT_MONTHLY) {
+    			dlg.monthlyRepeatRB.setSelected(true);
+    			dlg.monthlyRepeatRB_actionPerformed(null);
+    			dlg.dayOfMonthSpin.setValue(new Integer(ev.getPeriod()));
+    		}
+    		else if (rep == EventsManager.REPEAT_YEARLY) {
+    			dlg.yearlyRepeatRB.setSelected(true);
+    			dlg.yearlyRepeatRB_actionPerformed(null);
+    			dlg.dayOfMonthSpin.setValue(new Integer(ev.getPeriod()));
+    		}
+    		if (ev.getEndDate() != null) {
+    			dlg.endDate.getModel().setValue(ev.getEndDate().getDate());
+    			dlg.enableEndDateCB.setSelected(true);
+    			dlg.enableEndDateCB_actionPerformed(null);
+    		}
+    		if(ev.getWorkingDays()) {
+    			dlg.workingDaysOnlyCB.setSelected(true);
+    		}
+    	}
+
+    	Dimension frmSize = App.getFrame().getSize();
+    	Point loc = App.getFrame().getLocation();
+    	dlg.setLocation((frmSize.width - dlg.getSize().width) / 2 + loc.x, (frmSize.height - dlg.getSize().height) / 2 + loc.y);
+    	dlg.setVisible(true);
+    	if (dlg.CANCELLED)
+    		return;
+    	Calendar calendar = new GregorianCalendar(Local.getCurrentLocale());
+    	calendar.setTime(((Date)dlg.timeSpin.getModel().getValue()));
+    	int hh = calendar.get(Calendar.HOUR_OF_DAY);
+    	int mm = calendar.get(Calendar.MINUTE);
+    	String text = dlg.textField.getText();
+    	String disc = dlg.discField.getText();
+    	if (dlg.noRepeatRB.isSelected()) {
+    		EventsManager.createEvent(CurrentDate.get(), hh, mm, text, disc,dlg.emailNotifyCB.isSelected());
+    	}
+    	else {
+    		updateEvents(dlg,hh,mm,text,disc);
+    	}    
+    	saveEvents();
+    }
+    
     void newEventB_actionPerformed(ActionEvent e) {
         Calendar cdate = CurrentDate.get().getCalendar();
         // round down to hour
@@ -472,6 +584,9 @@ public class EventsPanel extends JPanel {
     }
     void ppEditEvent_actionPerformed(ActionEvent e) {
         editEventB_actionPerformed(e);
+    }
+    void ppCopyEvent_actionPerformed(ActionEvent e) {
+        copyEventB_actionPerformed(e);
     }
     void ppRemoveEvent_actionPerformed(ActionEvent e) {
         removeEventB_actionPerformed(e);
